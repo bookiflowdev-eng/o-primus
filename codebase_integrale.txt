@@ -1,0 +1,1337 @@
+SNAPSHOT COMPLET - Fri Feb 27 10:22:31 PM UTC 2026
+
+
+==================================================================
+FICHIER: package.json
+==================================================================
+{
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@gsap/react": "^2.1.2",
+    "@monaco-editor/react": "^4.7.0",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
+    "@stripe/stripe-js": "^8.8.0",
+    "@supabase/supabase-js": "^2.98.0",
+    "axios": "^1.13.6",
+    "firebase": "^12.10.0",
+    "glob": "^13.0.6",
+    "gsap": "^3.14.2",
+    "lenis": "^1.3.17",
+    "motion": "^12.34.3",
+    "next": "^15.5.12",
+    "next-auth": "^4.24.13",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "simple-git": "^3.32.3",
+    "stripe": "^20.4.0",
+    "three": "^0.183.1",
+    "tsx": "^4.21.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "eslint-config-next": "^16.1.6",
+    "eslint-plugin-react-hooks": "^7.0.1"
+  }
+}
+
+
+==================================================================
+FICHIER: tsconfig.json
+==================================================================
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [{ "name": "next" }],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
+
+
+==================================================================
+FICHIER: src/types/user.ts
+==================================================================
+
+
+==================================================================
+FICHIER: src/types/generation.ts
+==================================================================
+import type { ValidationScore } from './agent'
+
+export interface GenerationRequest {
+  userId?: string
+  prompt: string
+  style?: string
+  includeThreeD?: boolean
+  targetAudience?: string
+  industry?: string
+  colorPreference?: string
+  animationIntensity?: 'subtle' | 'moderate' | 'intense'
+}
+
+export interface GenerationOutput {
+  id?: string
+  userId?: string
+  request: GenerationRequest
+  files: {
+    'page.tsx': string
+    'layout.tsx'?: string
+    'animations.ts': string
+    'globals.css': string
+    'three-scene.tsx'?: string
+    'package.json': string
+  }
+  validationScore: ValidationScore
+  createdAt: string
+  status: 'pending' | 'generating' | 'completed' | 'failed'
+}
+
+
+
+==================================================================
+FICHIER: src/types/agent.ts
+==================================================================
+export interface DesignSpec {
+  style?: string
+  mood?: string
+  targetAudience?: string
+  primaryAnimations?: string[]
+  colorPalette?: string[]
+  typography?: string
+  layout?: string
+  sections?: string[]
+  includeThreeD?: boolean
+  complexity?: 'minimal' | 'standard' | 'premium' | 'ultra'
+}
+
+export interface AnimationConfig {
+  gsapTimeline?: string
+  scrollTriggers?: string[]
+  lenisConfig?: string
+  microInteractions?: string[]
+  pageTransition?: string
+}
+
+export interface ThreeScene {
+  sceneCode?: string
+  shaders?: string[]
+  lights?: string[]
+  cameraConfig?: string
+  performanceTier?: 'low' | 'medium' | 'high'
+}
+
+export interface ValidationScore {
+  accessibility: number
+  performance: string
+  lintErrors: number
+  designScore?: number
+  animationScore?: number
+}
+
+
+==================================================================
+FICHIER: src/components/generator/StyleSelector.tsx
+==================================================================
+
+
+==================================================================
+FICHIER: src/components/generator/GeneratorForm.tsx
+==================================================================
+
+
+==================================================================
+FICHIER: src/components/generator/IntensitySlider.tsx
+==================================================================
+
+
+==================================================================
+FICHIER: src/components/layout/Navbar.tsx
+==================================================================
+
+
+==================================================================
+FICHIER: src/components/layout/Footer.tsx
+==================================================================
+
+
+==================================================================
+FICHIER: src/components/preview/CodePreview.tsx
+==================================================================
+
+
+==================================================================
+FICHIER: src/components/preview/LivePreview.tsx
+==================================================================
+
+
+==================================================================
+FICHIER: src/components/ui/Card.tsx
+==================================================================
+
+
+==================================================================
+FICHIER: src/components/ui/Badge.tsx
+==================================================================
+
+
+==================================================================
+FICHIER: src/components/ui/Button.tsx
+==================================================================
+
+
+==================================================================
+FICHIER: src/app/layout.tsx
+==================================================================
+
+
+==================================================================
+FICHIER: src/app/page.tsx
+==================================================================
+
+
+==================================================================
+FICHIER: src/app/pricing/page.tsx
+==================================================================
+
+
+==================================================================
+FICHIER: src/app/globals.css
+==================================================================
+
+
+==================================================================
+FICHIER: src/app/auth/page.tsx
+==================================================================
+
+
+==================================================================
+FICHIER: src/app/app/page.tsx
+==================================================================
+
+
+==================================================================
+FICHIER: src/app/api/stripe/webhook/route.ts
+==================================================================
+import { NextRequest, NextResponse } from 'next/server'
+import { stripe } from '@/lib/stripe'
+import { resetQuota, type PlanKey } from '@/lib/quota'
+import type Stripe from 'stripe'
+
+export const runtime = 'nodejs'
+
+export async function POST(req: NextRequest): Promise<NextResponse> {
+  const body = await req.text()
+  const sig = req.headers.get('stripe-signature')
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
+
+  if (!sig || !webhookSecret) {
+    return NextResponse.json({ error: 'Signature manquante' }, { status: 400 })
+  }
+
+  let event: Stripe.Event
+
+  try {
+    event = stripe.webhooks.constructEvent(body, sig, webhookSecret)
+  } catch {
+    return NextResponse.json({ error: 'Signature invalide' }, { status: 400 })
+  }
+
+  switch (event.type) {
+    case 'checkout.session.completed': {
+      const session = event.data.object as Stripe.Checkout.Session
+      const userId = session.metadata?.userId
+      const planKey = session.metadata?.planKey as PlanKey
+
+      if (userId && planKey) {
+        await resetQuota(userId, planKey)
+      }
+      break
+    }
+
+    case 'customer.subscription.deleted': {
+      const subscription = event.data.object as Stripe.Subscription
+      const userId = subscription.metadata?.userId
+      if (userId) {
+        await resetQuota(userId, 'starter')
+      }
+      break
+    }
+
+    case 'invoice.payment_failed': {
+      // Log uniquement — pas de blocage immédiat
+      console.error('[Stripe Webhook] Paiement échoué:', event.data.object)
+      break
+    }
+  }
+
+  return NextResponse.json({ received: true })
+}
+
+
+==================================================================
+FICHIER: src/app/api/stripe/checkout/route.ts
+==================================================================
+import { NextRequest, NextResponse } from 'next/server'
+import { createCheckoutSession, type PlanKey } from '@/lib/stripe'
+import { z } from 'zod'
+
+const schema = z.object({
+  planKey: z.enum(['starter', 'pro', 'agency']),
+  userId: z.string().min(1),
+})
+
+export async function POST(req: NextRequest): Promise<NextResponse> {
+  const body = await req.json() as unknown
+  const parsed = schema.safeParse(body)
+
+  if (!parsed.success) {
+    return NextResponse.json({ error: 'Paramètres invalides' }, { status: 400 })
+  }
+
+  const { planKey, userId } = parsed.data
+  const origin = req.headers.get('origin') ?? 'http://localhost:3000'
+
+  try {
+    const url = await createCheckoutSession(
+      planKey as PlanKey,
+      userId,
+      `${origin}/dashboard?success=true`,
+      `${origin}/pricing?canceled=true`
+    )
+    return NextResponse.json({ url })
+  } catch (error) {
+    const msg = error instanceof Error ? error.message : 'Erreur Stripe'
+    return NextResponse.json({ error: msg }, { status: 500 })
+  }
+}
+
+
+==================================================================
+FICHIER: src/app/api/auth/[...nextauth]/route.ts
+==================================================================
+import NextAuth from 'next-auth'
+import type { NextAuthOptions } from 'next-auth'
+import GoogleProvider from 'next-auth/providers/google'
+import GitHubProvider from 'next-auth/providers/github'
+import { supabaseAdmin } from '@/lib/supabase'
+import { resetQuota } from '@/lib/quota'
+
+export const authOptions: NextAuthOptions = {
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+    }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID ?? '',
+      clientSecret: process.env.GITHUB_CLIENT_SECRET ?? '',
+    }),
+  ],
+
+  callbacks: {
+    async signIn({ user }) {
+      if (!user.email) return false
+      const { error } = await supabaseAdmin
+        .from('users')
+        .upsert({
+          id: user.id,
+          email: user.email,
+          name: user.name ?? '',
+          avatar_url: user.image ?? '',
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'id' })
+      if (error) {
+        console.error('[Auth] Upsert user échoué:', error.message)
+        return false
+      }
+      return true
+    },
+
+    async session({ session, token }) {
+      if (session.user && token.sub) {
+        (session.user as { id?: string }).id = token.sub
+      }
+      return session
+    },
+
+    async jwt({ token, user }) {
+      if (user) token.sub = user.id
+      return token
+    },
+  },
+
+  events: {
+    async createUser({ user }) {
+      if (user.id) await resetQuota(user.id, 'starter')
+    },
+  },
+
+  pages: {
+    signIn: '/auth/signin',
+    error: '/auth/error',
+  },
+
+  session: { strategy: 'jwt' },
+  secret: process.env.NEXTAUTH_SECRET,
+}
+
+const handler = NextAuth(authOptions)
+export { handler as GET, handler as POST }
+
+
+==================================================================
+FICHIER: src/app/api/webhooks/stripe/route.ts
+==================================================================
+
+
+==================================================================
+FICHIER: src/app/api/generations/route.ts
+==================================================================
+
+
+==================================================================
+FICHIER: src/app/api/generate/route.ts
+==================================================================
+import { NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
+import { runGenerationPipeline } from '@/agents/router'
+import { supabaseAdmin } from '@/lib/supabase'
+import { randomUUID } from 'crypto'
+
+const GenerateSchema = z.object({
+  prompt: z.string().min(10),
+  style: z.enum(['scroll-reveal', 'parallax', '3d-immersive', 'glassmorphism', 'minimal-clean', 'dark-premium']).optional(),
+  intensity: z.enum(['subtle', 'moderate', 'intense']).optional(),
+  includeThreeD: z.boolean().optional().default(false),
+  colorPalette: z.string().optional(),
+  targetAudience: z.string().optional(),
+  industry: z.string().optional(),
+})
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json()
+    const parsed = GenerateSchema.safeParse(body)
+
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: 'Paramètres invalides', details: parsed.error.flatten() },
+        { status: 400 }
+      )
+    }
+
+    const { prompt, style, intensity, includeThreeD, colorPalette, targetAudience, industry } = parsed.data
+
+    // Auth header optionnel
+    const authHeader = req.headers.get('authorization')
+    const userId = authHeader ? authHeader.replace('Bearer ', '') : 'anonymous'
+
+    const generationId = randomUUID()
+
+    // Insertion en base avec statut pending
+    await supabaseAdmin.from('generations').insert({
+      id: generationId,
+      user_id: userId,
+      prompt,
+      status: 'generating',
+      created_at: new Date().toISOString(),
+    })
+
+    // Lancement du pipeline
+    const result = await runGenerationPipeline({
+      userId,
+      prompt,
+      style,
+      includeThreeD,
+      targetAudience,
+      industry,
+      animationIntensity: intensity,
+      colorPreference: colorPalette,
+    })
+
+    // Mise à jour en base avec le résultat
+    await supabaseAdmin.from('generations').update({
+      status: 'completed',
+      files: result.files,
+      validation_score: result.validationScore,
+      completed_at: new Date().toISOString(),
+    }).eq('id', generationId)
+
+    return NextResponse.json({
+      success: true,
+      generationId,
+      files: result.files,
+      validationScore: result.validationScore,
+    })
+
+  } catch (error) {
+    console.error('[API/generate] Erreur:', error)
+    return NextResponse.json(
+      { error: 'Erreur interne du serveur' },
+      { status: 500 }
+    )
+  }
+}
+
+
+==================================================================
+FICHIER: src/app/api/validate/route.ts
+==================================================================
+
+
+==================================================================
+FICHIER: src/agents/design-analyzer.ts
+==================================================================
+import { GoogleGenerativeAI } from '@google/generative-ai'
+import type { GenerationRequest } from '@/types/generation'
+import type { DesignSpec } from '@/types/agent'
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '')
+const model = genAI.getGenerativeModel({ model: 'gemini-3.1-pro-preview' })
+
+export async function runDesignAnalyzer(request: GenerationRequest): Promise<DesignSpec> {
+  const prompt = `
+Tu es un directeur artistique senior de niveau Awwwards SOTD.
+Analyse cette demande et retourne un JSON DesignSpec strict.
+
+DEMANDE: "${request.prompt}"
+STYLE DEMANDÉ: ${request.style ?? 'auto'}
+AUDIENCE: ${request.targetAudience ?? 'general'}
+INDUSTRIE: ${request.industry ?? 'tech'}
+3D: ${request.includeThreeD ?? false}
+
+Retourne UNIQUEMENT ce JSON (pas de markdown, pas d'explication):
+{
+  "style": "scroll-reveal|parallax|3d-immersive|glassmorphism|minimal-clean|dark-premium",
+  "mood": "string décrivant l'ambiance visuelle",
+  "targetAudience": "string",
+  "primaryAnimations": ["array", "de", "techniques"],
+  "colorPalette": ["#hex1", "#hex2", "#hex3", "#hex4"],
+  "typography": "string décrivant la typo",
+  "layout": "string décrivant la structure",
+  "sections": ["hero", "features", "testimonials", "cta", "footer"],
+  "includeThreeD": boolean,
+  "complexity": "minimal|standard|premium|ultra"
+}
+`
+
+  const result = await model.generateContent(prompt)
+  const text = result.response.text().trim()
+
+  try {
+    const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+    const parsed = JSON.parse(clean) as DesignSpec
+    return {
+      ...parsed,
+      includeThreeD: request.includeThreeD ?? parsed.includeThreeD ?? false,
+      colorPalette: parsed.colorPalette ?? ['#6366f1', '#8b5cf6', '#a78bfa', '#c4b5fd'],
+    }
+  } catch {
+    // Fallback safe si Gemini renvoie du JSON invalide
+    return {
+      style: request.style ?? 'dark-premium',
+      mood: 'sophisticated, high-end, minimal',
+      targetAudience: request.targetAudience ?? 'entreprises tech',
+      primaryAnimations: ['scroll-reveal', 'stagger', 'parallax'],
+      colorPalette: ['#6366f1', '#8b5cf6', '#a78bfa', '#c4b5fd'],
+      typography: 'Inter + Clash Display',
+      layout: 'full-screen hero, sections alternées',
+      sections: ['hero', 'features', 'social-proof', 'cta', 'footer'],
+      includeThreeD: request.includeThreeD ?? false,
+      complexity: 'premium',
+    }
+  }
+}
+
+
+==================================================================
+FICHIER: src/agents/rag-retriever.ts
+==================================================================
+import { GoogleGenerativeAI } from '@google/generative-ai'
+import { searchSimilarCode } from '@/lib/rag'
+import type { GenerationRequest } from '@/types/generation'
+import type { DesignSpec } from '@/types/agent'
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '')
+const embeddingModel = genAI.getGenerativeModel({ model: 'models/text-embedding-004' })
+
+export interface RAGResult {
+  chunks: Array<{
+    id: string
+    repoName: string
+    filePath: string
+    codeSnippet: string
+    description: string
+  }>
+  animationContext: string   // Injecté dans AnimationEngineer
+  threeContext: string       // Injecté dans ThreeSpecialist
+  architectureContext: string // Injecté dans CodeOrchestrator
+}
+
+async function buildSearchQuery(
+  request: GenerationRequest,
+  designSpec: DesignSpec
+): Promise<string> {
+  const parts = [
+    `Landing page ${request.style ?? 'premium'} style`,
+    `mood: ${designSpec.mood ?? 'sophisticated'}`,
+    `animations: ${designSpec.primaryAnimations?.join(', ') ?? 'scroll reveal'}`,
+    `audience: ${designSpec.targetAudience ?? 'enterprise'}`,
+    request.includeThreeD ? 'React Three Fiber 3D WebGL scene' : '',
+    'GSAP ScrollTrigger Lenis smooth scroll',
+    'premium award-winning Awwwards SOTD',
+  ].filter(Boolean).join(' — ')
+
+  return parts
+}
+
+function partitionChunksByCategory(chunks: RAGResult['chunks']): {
+  animationChunks: RAGResult['chunks']
+  threeChunks: RAGResult['chunks']
+  archChunks: RAGResult['chunks']
+} {
+  return {
+    animationChunks: chunks.filter(c =>
+      c.description.includes('GSAP') ||
+      c.description.includes('Lenis') ||
+      c.description.includes('animation') ||
+      c.description.includes('scroll') ||
+      c.repoName === 'lenis' ||
+      c.repoName === 'locomotive-scroll' ||
+      c.repoName === 'motion-primitives'
+    ),
+    threeChunks: chunks.filter(c =>
+      c.description.includes('Three Fiber') ||
+      c.description.includes('GLSL') ||
+      c.description.includes('3D') ||
+      c.repoName === 'drei' ||
+      c.repoName === 'r3f-journey'
+    ),
+    archChunks: chunks.filter(c =>
+      c.repoName === 'shadcn-ui' ||
+      c.repoName === 'vercel-commerce' ||
+      c.description.includes('React hook') ||
+      c.description.includes('TypeScript module')
+    ),
+  }
+}
+
+function buildContext(chunks: RAGResult['chunks'], maxChunks = 3): string {
+  if (chunks.length === 0) return ''
+
+  return chunks
+    .slice(0, maxChunks)
+    .map((c, i) => `// [REF ${i + 1}] from ${c.repoName} — ${c.filePath}\n${c.codeSnippet}`)
+    .join('\n\n---\n\n')
+}
+
+export async function runRagRetriever(
+  request: GenerationRequest,
+  designSpec: DesignSpec
+): Promise<RAGResult> {
+  try {
+    // 1. Construire la requête sémantique
+    const query = await buildSearchQuery(request, designSpec)
+
+    // 2. Générer l'embedding de la requête
+    const result = await embeddingModel.embedContent(query)
+    const queryEmbedding = result.embedding.values
+
+    // 3. Recherche vectorielle dans Supabase
+    const rawChunks = await searchSimilarCode(queryEmbedding, 15, 0.72)
+
+    const chunks = rawChunks.map(c => ({
+      id: c.id,
+      repoName: c.repoName,
+      filePath: c.filePath,
+      codeSnippet: c.codeSnippet,
+      description: c.description,
+    }))
+
+    // 4. Partitionner par catégorie
+    const { animationChunks, threeChunks, archChunks } = partitionChunksByCategory(chunks)
+
+    return {
+      chunks,
+      animationContext: buildContext(animationChunks, 3),
+      threeContext: buildContext(threeChunks, 2),
+      architectureContext: buildContext(archChunks, 2),
+    }
+  } catch (err) {
+    // Si le RAG échoue, on continue sans contexte — le pipeline ne doit pas bloquer
+    console.error('[RAG] Retrieval échoué, génération sans contexte:', err)
+    return {
+      chunks: [],
+      animationContext: '',
+      threeContext: '',
+      architectureContext: '',
+    }
+  }
+}
+
+
+==================================================================
+FICHIER: src/agents/code-orchestrator.ts
+==================================================================
+import { GoogleGenerativeAI } from '@google/generative-ai'
+import type { GenerationRequest, GenerationOutput } from '@/types/generation'
+import type { DesignSpec, AnimationConfig, ThreeScene } from '@/types/agent'
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '')
+const model = genAI.getGenerativeModel({ model: 'gemini-3.1-pro-preview' })
+
+export async function runCodeOrchestrator(
+  request: GenerationRequest,
+  designSpec: DesignSpec,
+  animationConfig: AnimationConfig,
+  threeScene: ThreeScene | null,
+  ragContext?: string
+): Promise<GenerationOutput['files']> {
+  const ragSection = ragContext
+    ? `\n\nPATTERNS ARCHITECTURE PREMIUM:\n${ragContext}`
+    : ''
+
+  const typography = designSpec.typography ?? 'Inter'
+  const palette = designSpec.colorPalette ?? ['#6366f1', '#8b5cf6', '#a78bfa', '#c4b5fd']
+  const hasThreeD = designSpec.includeThreeD ?? false
+
+  const prompt = `
+Tu es un ingénieur frontend senior spécialisé Next.js 15 App Router, TypeScript strict, Tailwind.
+Génère le code complet d'une landing page premium niveau Awwwards SOTD.
+
+PROMPT UTILISATEUR: "${request.prompt}"
+STYLE: ${designSpec.style}
+MOOD: ${designSpec.mood}
+TYPOGRAPHIE: ${typography}
+COULEURS: ${palette.join(', ')}
+SECTIONS: ${designSpec.sections?.join(', ')}
+3D ACTIVÉ: ${hasThreeD}
+ANIMATION CONFIG: ${JSON.stringify(animationConfig).slice(0, 500)}
+${ragSection}
+
+Génère les fichiers suivants en JSON strict:
+{
+  "page.tsx": "code complet Next.js App Router page",
+  "layout.tsx": "code layout avec fonts + metadata",
+  "animations.ts": "tous les hooks et helpers GSAP/Lenis",
+  "globals.css": "CSS global avec variables, animations keyframes premium",
+  "package.json": "dépendances exactes nécessaires"
+  ${hasThreeD ? ', "three-scene.tsx": "composant R3F complet"' : ''}
+}
+`
+
+  const result = await model.generateContent(prompt)
+  const text = result.response.text().trim()
+
+  try {
+    const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+    return JSON.parse(clean) as GenerationOutput['files']
+  } catch {
+    return {
+      'page.tsx': `'use client'\nexport default function Page() { return <main className="min-h-screen bg-black text-white"><h1 className="text-6xl font-bold">${request.prompt}</h1></main> }`,
+      'layout.tsx': `import type { Metadata } from 'next'\nexport const metadata: Metadata = { title: 'O-Primus Generation' }\nexport default function Layout({ children }: { children: React.ReactNode }) { return <html lang="fr"><body>{children}</body></html> }`,
+      'animations.ts': `import gsap from 'gsap'\nimport { ScrollTrigger } from 'gsap/ScrollTrigger'\ngsap.registerPlugin(ScrollTrigger)\nexport { gsap, ScrollTrigger }`,
+      'globals.css': `:root { --primary: ${palette[0]}; --secondary: ${palette[1]}; } * { margin: 0; padding: 0; box-sizing: border-box; }`,
+      'package.json': JSON.stringify({ dependencies: { next: '^15.0.0', react: '^19.0.0', gsap: '^3.12.0', '@react-three/fiber': '^8.0.0', '@react-three/drei': '^9.0.0', lenis: '^1.0.0' } }, null, 2),
+      ...(hasThreeD && threeScene ? { 'three-scene.tsx': threeScene.sceneCode ?? '' } : {}),
+    }
+  }
+}
+
+
+==================================================================
+FICHIER: src/agents/animation-engineer.ts
+==================================================================
+import { GoogleGenerativeAI } from '@google/generative-ai'
+import type { GenerationRequest } from '@/types/generation'
+import type { DesignSpec, AnimationConfig } from '@/types/agent'
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '')
+const model = genAI.getGenerativeModel({ model: 'gemini-3.1-pro-preview' })
+
+export async function runAnimationEngineer(
+  request: GenerationRequest,
+  designSpec: DesignSpec,
+  ragContext?: string
+): Promise<AnimationConfig> {
+  const ragSection = ragContext
+    ? `\n\nEXTRAITS DE CODE PREMIUM (inspire-toi, n'utilise pas mot pour mot):\n${ragContext}`
+    : ''
+
+  const prompt = `
+Tu es un ingénieur d'animation senior spécialisé GSAP + Lenis au niveau Awwwards.
+Génère une config d'animation production-ready pour ce projet.
+
+STYLE: ${designSpec.style ?? 'dark-premium'}
+MOOD: ${designSpec.mood ?? 'sophisticated'}
+INTENSITÉ: ${request.animationIntensity ?? 'moderate'}
+ANIMATIONS: ${designSpec.primaryAnimations?.join(', ') ?? 'scroll-reveal, stagger'}
+SECTIONS: ${designSpec.sections?.join(', ') ?? 'hero, features, cta, footer'}
+${ragSection}
+
+Retourne UNIQUEMENT ce JSON:
+{
+  "gsapTimeline": "code TypeScript complet pour la timeline GSAP principale",
+  "scrollTriggers": ["code ScrollTrigger section 1", "code ScrollTrigger section 2"],
+  "lenisConfig": "code d'initialisation Lenis",
+  "microInteractions": ["hover effect 1", "hover effect 2", "cursor effect"],
+  "pageTransition": "code de transition entre pages"
+}
+`
+
+  const result = await model.generateContent(prompt)
+  const text = result.response.text().trim()
+
+  try {
+    const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+    return JSON.parse(clean) as AnimationConfig
+  } catch {
+    return {
+      gsapTimeline: `gsap.fromTo('.hero', { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1.2, ease: 'power4.out' })`,
+      scrollTriggers: [
+        `ScrollTrigger.create({ trigger: '.features', start: 'top 80%', onEnter: () => gsap.from('.feature-card', { opacity: 0, y: 40, stagger: 0.15 }) })`,
+      ],
+      lenisConfig: `new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true })`,
+      microInteractions: [`gsap.to('.cta-btn', { scale: 1.05, duration: 0.3, ease: 'power2.out' })`],
+      pageTransition: `gsap.to('.page', { opacity: 0, duration: 0.4, ease: 'power2.inOut' })`,
+    }
+  }
+}
+
+
+==================================================================
+FICHIER: src/agents/three-specialist.ts
+==================================================================
+import { GoogleGenerativeAI } from '@google/generative-ai'
+import type { GenerationRequest } from '@/types/generation'
+import type { DesignSpec, ThreeScene } from '@/types/agent'
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '')
+const model = genAI.getGenerativeModel({ model: 'gemini-3.1-pro-preview' })
+
+export async function runThreeSpecialist(
+  request: GenerationRequest,
+  designSpec: DesignSpec,
+  ragContext?: string
+): Promise<ThreeScene> {
+  const palette = designSpec.colorPalette ?? ['#6366f1', '#8b5cf6', '#a78bfa', '#c4b5fd']
+
+  return {
+    sceneCode: `import { Canvas } from '@react-three/fiber'\nimport { Float, Environment } from '@react-three/drei'\nexport function Scene() {\n  return (\n    <Canvas camera={{ position: [0, 0, 5] }}>\n      <Environment preset="city" />\n      <Float speed={2}>\n        <mesh>\n          <icosahedronGeometry args={[1, 4]} />\n          <meshStandardMaterial color="${palette[0]}" wireframe />\n        </mesh>\n      </Float>\n    </Canvas>\n  )\n}`,
+    shaders: [],
+    lights: ['<ambientLight intensity={0.5} />', `<pointLight position={[10, 10, 10]} color="${palette[1]}" />`],
+    cameraConfig: '{ position: [0, 0, 5], fov: 75 }',
+    performanceTier: 'medium',
+  }
+}
+
+
+==================================================================
+FICHIER: src/agents/quality-validator.ts
+==================================================================
+import type { GenerationOutput, GenerationRequest } from '@/types/generation'
+import type { ValidationScore } from '@/types/agent'
+
+export async function runQualityValidator(
+  files: GenerationOutput['files'],
+  request: GenerationRequest
+): Promise<ValidationScore> {
+  const pageTsx = files['page.tsx'] ?? ''
+  const animationTs = files['animations.ts'] ?? ''
+
+  let score = 100
+  const issues: string[] = []
+
+  // Checks accessibilité
+  if (!pageTsx.includes('aria-') && !pageTsx.includes('role=')) {
+    score -= 10
+    issues.push('Attributs ARIA manquants')
+  }
+  if (!pageTsx.includes('alt=')) {
+    score -= 5
+    issues.push('Alt text images manquant')
+  }
+
+  // Checks performance
+  if (!pageTsx.includes("'use client'") && pageTsx.includes('useState')) {
+    score -= 5
+    issues.push("'use client' manquant sur composant avec état")
+  }
+
+  // Checks animation quality
+  const hasGSAP = animationTs.includes('gsap') || pageTsx.includes('gsap')
+  const hasLenis = animationTs.includes('Lenis') || pageTsx.includes('Lenis')
+  const hasScrollTrigger = animationTs.includes('ScrollTrigger')
+
+  if (!hasGSAP) { score -= 15; issues.push('GSAP absent') }
+  if (!hasLenis) { score -= 10; issues.push('Lenis smooth scroll absent') }
+  if (!hasScrollTrigger) { score -= 10; issues.push('ScrollTrigger absent') }
+
+  const lintErrors = issues.length
+
+  return {
+    accessibility: Math.max(0, score),
+    performance: lintErrors === 0 ? 'A' : lintErrors <= 2 ? 'B' : 'C',
+    lintErrors,
+    designScore: hasGSAP && hasLenis && hasScrollTrigger ? 95 : 70,
+    animationScore: hasGSAP ? (hasScrollTrigger ? 90 : 70) : 40,
+  }
+}
+
+
+==================================================================
+FICHIER: src/agents/router.ts
+==================================================================
+import { runDesignAnalyzer } from './design-analyzer'
+import { runAnimationEngineer } from './animation-engineer'
+import { runThreeSpecialist } from './three-specialist'
+import { runCodeOrchestrator } from './code-orchestrator'
+import { runQualityValidator } from './quality-validator'
+import { runRagRetriever } from './rag-retriever'
+import type { GenerationRequest, GenerationOutput } from '@/types/generation'
+import type { ThreeScene } from '@/types/agent'
+
+async function resolveThreeScene(
+  enabled: boolean,
+  request: GenerationRequest,
+  designSpec: import('@/types/agent').DesignSpec,
+  ragContext: string
+): Promise<ThreeScene | null> {
+  if (!enabled) return null
+  return runThreeSpecialist(request, designSpec, ragContext)
+}
+
+export async function runGenerationPipeline(
+  request: GenerationRequest
+): Promise<GenerationOutput> {
+  const startTime = Date.now()
+
+  console.log('[Pipeline] 1/6 — Design Analyzer')
+  const designSpec = await runDesignAnalyzer(request)
+
+  console.log('[Pipeline] 2/6 — RAG Retriever')
+  const ragResult = await runRagRetriever(request, designSpec)
+
+  console.log('[Pipeline] 3+4/6 — Animation + Three (parallèle)')
+  const [animationConfig, threeScene] = await Promise.all([
+    runAnimationEngineer(request, designSpec, ragResult.animationContext),
+    resolveThreeScene(
+      designSpec.includeThreeD ?? false,
+      request,
+      designSpec,
+      ragResult.threeContext
+    ),
+  ])
+
+  console.log('[Pipeline] 5/6 — Code Orchestrator')
+  const generatedFiles = await runCodeOrchestrator(
+    request,
+    designSpec,
+    animationConfig,
+    threeScene,
+    ragResult.architectureContext
+  )
+
+  console.log('[Pipeline] 6/6 — Quality Validator')
+  const validationScore = await runQualityValidator(generatedFiles, request)
+
+  const duration = ((Date.now() - startTime) / 1000).toFixed(1)
+  console.log(`[Pipeline] ✅ Terminé en ${duration}s`)
+
+  return {
+    userId: request.userId,
+    request,
+    files: generatedFiles,
+    validationScore,
+    createdAt: new Date().toISOString(),
+    status: 'completed',
+  }
+}
+
+
+==================================================================
+FICHIER: src/lib/stripe.ts
+==================================================================
+import Stripe from 'stripe'
+
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error('STRIPE_SECRET_KEY manquante dans .env.local')
+}
+
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: '2026-02-25.clover',
+  typescript: true,
+})
+
+export const STRIPE_PLANS = {
+  starter: {
+    name: 'Starter',
+    priceId: process.env.STRIPE_PRICE_STARTER ?? '',
+    generations: 5,
+    price: 19,
+  },
+  pro: {
+    name: 'Pro',
+    priceId: process.env.STRIPE_PRICE_PRO ?? '',
+    generations: 30,
+    price: 49,
+  },
+  agency: {
+    name: 'Agency',
+    priceId: process.env.STRIPE_PRICE_AGENCY ?? '',
+    generations: 999,
+    price: 149,
+  },
+} as const
+
+export type PlanKey = keyof typeof STRIPE_PLANS
+
+export async function createCheckoutSession(
+  planKey: PlanKey,
+  userId: string,
+  successUrl: string,
+  cancelUrl: string
+): Promise<string> {
+  const plan = STRIPE_PLANS[planKey]
+
+  const session = await stripe.checkout.sessions.create({
+    mode: 'subscription',
+    payment_method_types: ['card'],
+    line_items: [{ price: plan.priceId, quantity: 1 }],
+    success_url: successUrl,
+    cancel_url: cancelUrl,
+    metadata: { userId, planKey },
+    allow_promotion_codes: true,
+  })
+
+  if (!session.url) throw new Error('Stripe: URL de checkout manquante')
+  return session.url
+}
+
+export async function createPortalSession(
+  customerId: string,
+  returnUrl: string
+): Promise<string> {
+  const session = await stripe.billingPortal.sessions.create({
+    customer: customerId,
+    return_url: returnUrl,
+  })
+  return session.url
+}
+
+
+==================================================================
+FICHIER: src/lib/prompts/three-prompt.ts
+==================================================================
+
+
+==================================================================
+FICHIER: src/lib/prompts/system-prompt.ts
+==================================================================
+
+
+==================================================================
+FICHIER: src/lib/prompts/animation-prompt.ts
+==================================================================
+
+
+==================================================================
+FICHIER: src/lib/quota.ts
+==================================================================
+import { supabaseAdmin } from './supabase'
+import { STRIPE_PLANS } from './stripe'
+import type { PlanKey } from './stripe'
+
+export type { PlanKey } from './stripe'
+
+export interface UserQuota {
+  userId: string
+  planKey: PlanKey
+  generationsUsed: number
+  generationsLimit: number
+  resetAt: string
+}
+
+export async function getUserQuota(userId: string): Promise<UserQuota | null> {
+  const { data, error } = await supabaseAdmin
+    .from('user_quotas')
+    .select('*')
+    .eq('user_id', userId)
+    .single()
+
+  if (error || !data) return null
+
+  const planKey = (data.plan_key ?? 'starter') as PlanKey
+
+  return {
+    userId,
+    planKey,
+    generationsUsed: data.generations_used as number ?? 0,
+    generationsLimit: STRIPE_PLANS[planKey].generations,
+    resetAt: data.reset_at as string ?? '',
+  }
+}
+
+export async function checkAndDecrementQuota(userId: string): Promise<boolean> {
+  const quota = await getUserQuota(userId)
+  if (!quota) return false
+  if (quota.generationsUsed >= quota.generationsLimit) return false
+
+  const { error } = await supabaseAdmin
+    .from('user_quotas')
+    .update({ generations_used: quota.generationsUsed + 1 })
+    .eq('user_id', userId)
+
+  return !error
+}
+
+export async function resetQuota(userId: string, planKey: PlanKey): Promise<void> {
+  const resetAt = new Date()
+  resetAt.setMonth(resetAt.getMonth() + 1)
+
+  await supabaseAdmin.from('user_quotas').upsert({
+    user_id: userId,
+    plan_key: planKey,
+    generations_used: 0,
+    reset_at: resetAt.toISOString(),
+  }, { onConflict: 'user_id' })
+}
+
+
+==================================================================
+FICHIER: src/lib/rag.ts
+==================================================================
+import { supabaseAdmin } from './supabase'
+
+export interface RepoChunk {
+  id: string
+  repoName: string
+  filePath: string
+  codeSnippet: string
+  description: string
+  embedding?: number[]
+}
+
+// Recherche vectorielle dans Supabase pgvector
+export async function searchSimilarCode(
+  queryEmbedding: number[],
+  limit = 5,
+  threshold = 0.75
+): Promise<RepoChunk[]> {
+  const { data, error } = await supabaseAdmin.rpc('match_repo_chunks', {
+    query_embedding: queryEmbedding,
+    match_threshold: threshold,
+    match_count: limit,
+  })
+  if (error) throw new Error(`RAG search échoué: ${error.message}`)
+  return (data ?? []) as RepoChunk[]
+}
+
+// Insertion d'un chunk avec embedding
+export async function upsertChunk(chunk: RepoChunk): Promise<void> {
+  const { error } = await supabaseAdmin
+    .from('repo_chunks')
+    .upsert({ ...chunk }, { onConflict: 'id' })
+  if (error) throw new Error(`RAG upsert échoué: ${error.message}`)
+}
+
+
+==================================================================
+FICHIER: src/lib/gemini.ts
+==================================================================
+import {
+  GoogleGenerativeAI,
+  HarmCategory,
+  HarmBlockThreshold,
+  SchemaType,
+} from '@google/generative-ai'
+
+if (!process.env.GEMINI_API_KEY) {
+  throw new Error('GEMINI_API_KEY manquante dans .env.local')
+}
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+
+// ============================================================
+// MODÈLE AGENTS — gemini-3.1-pro-preview-customtools
+// Variant officiel Google pour les agents avec function calling
+// Ne jamais substituer par un autre modèle
+// ============================================================
+export const geminiAgentModel = genAI.getGenerativeModel({
+  model: 'gemini-3.1-pro-preview-customtools',
+  safetySettings: [
+    { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+    { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
+    { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
+    { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+  ],
+  generationConfig: {
+    temperature: 1.0,
+    maxOutputTokens: 65536,
+  },
+})
+
+// ============================================================
+// MODÈLE SEARCH — gemini-3.1-pro-preview + Google Search
+// Séparé car built-in tools + function calling ne se mixent pas
+// SDK v0.24 utilise snake_case pour les built-in tools
+// ============================================================
+export const geminiSearchModel = genAI.getGenerativeModel({
+  model: 'gemini-3.1-pro-preview',
+  // @ts-expect-error — google_search est valide en runtime Gemini 3.1, pas encore typé dans SDK v0.24
+  tools: [{ google_search: {} }],
+  safetySettings: [
+    { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+    { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
+    { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
+    { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+  ],
+  generationConfig: {
+    temperature: 1.0,
+    maxOutputTokens: 8192,
+  },
+})
+
+// ============================================================
+// MODÈLE CODE EXECUTION — gemini-3.1-pro-preview + code_execution
+// Séparé pour valider la logique générée avant livraison
+// ============================================================
+export const geminiCodeModel = genAI.getGenerativeModel({
+  model: 'gemini-3.1-pro-preview',
+  // @ts-expect-error — code_execution est valide en runtime Gemini 3.1, pas encore typé dans SDK v0.24
+  tools: [{ code_execution: {} }],
+  safetySettings: [
+    { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+    { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
+    { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
+    { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+  ],
+  generationConfig: {
+    temperature: 1.0,
+    maxOutputTokens: 32768,
+  },
+})
+
+// ============================================================
+// GÉNÉRATION AGENTS — function calling avec custom tools
+// ============================================================
+export async function generateWithAgent(
+  prompt: string,
+  tools: object[]
+): Promise<{ text: string; functionCalls: Array<{ name: string; args: Record<string, unknown> }> }> {
+  const modelWithTools = genAI.getGenerativeModel({
+    model: 'gemini-3.1-pro-preview-customtools',
+    tools: tools as never,
+    generationConfig: { temperature: 1.0, maxOutputTokens: 65536 },
+  })
+  const result = await modelWithTools.generateContent(prompt)
+  const response = result.response
+  const functionCalls = response.functionCalls() ?? []
+  return {
+    text: response.text(),
+    functionCalls: functionCalls.map(fc => ({
+      name: fc.name,
+      args: fc.args as Record<string, unknown>,
+    })),
+  }
+}
+
+// ============================================================
+// GÉNÉRATION SEARCH — veille tendances design Awwwards live
+// ============================================================
+export async function generateWithSearch(prompt: string): Promise<string> {
+  const result = await geminiSearchModel.generateContent(prompt)
+  return result.response.text()
+}
+
+// ============================================================
+// GÉNÉRATION CODE VALIDATION — auto-vérification avant livraison
+// ============================================================
+export async function generateWithCodeExecution(prompt: string): Promise<string> {
+  const result = await geminiCodeModel.generateContent(prompt)
+  return result.response.text()
+}
+
+// ============================================================
+// RETRY UNIVERSEL — backoff exponentiel, zéro substitution modèle
+// ============================================================
+export async function generateWithRetry(
+  prompt: string,
+  mode: 'agent' | 'search' | 'code' = 'agent',
+  tools: object[] = [],
+  maxRetries = 3
+): Promise<string> {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      if (mode === 'search') return await generateWithSearch(prompt)
+      if (mode === 'code') return await generateWithCodeExecution(prompt)
+      const res = await generateWithAgent(prompt, tools)
+      return res.text
+    } catch (error: unknown) {
+      const isLastAttempt = attempt === maxRetries
+      const msg = error instanceof Error ? error.message : String(error)
+      if (isLastAttempt) throw new Error(`Gemini 3.1 Pro échec après ${maxRetries} tentatives: ${msg}`)
+      await new Promise(resolve => setTimeout(resolve, attempt * 1500))
+    }
+  }
+  throw new Error('Gemini 3.1 Pro: toutes les tentatives ont échoué')
+}
+
+// Export SchemaType pour les agents — évite les imports redondants
+export { SchemaType }
+
+
+==================================================================
+FICHIER: src/lib/supabase.ts
+==================================================================
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY as string
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Variables Supabase manquantes dans .env.local')
+}
+
+// Client public — côté frontend
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+// Client admin — côté serveur uniquement (routes API)
+export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false,
+  },
+})
+
+
+==================================================================
+FICHIER: src/hooks/useQuota.ts
+==================================================================
+
+
+==================================================================
+FICHIER: src/hooks/useGeneration.ts
+==================================================================
+
+
+==================================================================
+FICHIER: src/hooks/useAuth.ts
+==================================================================

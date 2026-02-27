@@ -1,0 +1,95 @@
+.
+|____architecture.txt
+|____codebase_integrale.txt
+|____docs
+| |____architecture.md
+| |____prompt-engineering.md
+|____infra
+| |____cloud-run.yaml
+| |____firestore.indexes.json
+| |____firestore.rules
+|____library
+| |____embeddings
+| |____repos
+|____package.json
+|____package-lock.json
+|____public
+| |____fonts
+| |____models
+|____scripts
+| |____index-repos.ts
+| |____repos.config.ts
+|____src
+| |____agents
+| | |____animation-engineer.ts
+| | |____code-orchestrator.ts
+| | |____design-analyzer.ts
+| | |____quality-validator.ts
+| | |____rag-retriever.ts
+| | |____router.ts
+| | |____three-specialist.ts
+| |____app
+| | |____api
+| | | |____auth
+| | | | |____[...nextauth]
+| | | | | |____route.ts
+| | | |____generate
+| | | | |____route.ts
+| | | |____generations
+| | | | |____route.ts
+| | | |____stripe
+| | | | |____checkout
+| | | | | |____route.ts
+| | | | |____webhook
+| | | | | |____route.ts
+| | | |____validate
+| | | | |____route.ts
+| | | |____webhooks
+| | | | |____stripe
+| | | | | |____route.ts
+| | |____app
+| | | |____page.tsx
+| | |____auth
+| | | |____page.tsx
+| | |____globals.css
+| | |____layout.tsx
+| | |____page.tsx
+| | |____pricing
+| | | |____page.tsx
+| |____components
+| | |____generator
+| | | |____GeneratorForm.tsx
+| | | |____IntensitySlider.tsx
+| | | |____StyleSelector.tsx
+| | |____layout
+| | | |____Footer.tsx
+| | | |____Navbar.tsx
+| | |____preview
+| | | |____CodePreview.tsx
+| | | |____LivePreview.tsx
+| | |____ui
+| | | |____Badge.tsx
+| | | |____Button.tsx
+| | | |____Card.tsx
+| |____hooks
+| | |____useAuth.ts
+| | |____useGeneration.ts
+| | |____useQuota.ts
+| |____lib
+| | |____gemini.ts
+| | |____prompts
+| | | |____animation-prompt.ts
+| | | |____system-prompt.ts
+| | | |____three-prompt.ts
+| | |____quota.ts
+| | |____rag.ts
+| | |____stripe.ts
+| | |____supabase.ts
+| |____styles
+| |____types
+| | |____agent.ts
+| | |____generation.ts
+| | |____user.ts
+|____test-pipeline.ts
+|____tsconfig.json
+|____tsconfig.tsbuildinfo
