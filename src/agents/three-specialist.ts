@@ -1,22 +1,66 @@
-import { GoogleGenerativeAI } from '@google/generative-ai'
-import type { GenerationRequest } from '@/types/generation'
-import type { DesignSpec, ThreeScene } from '@/types/agent'
+import { SchemaType, getGeminiClient } from '@/lib/gemini-client'
+import { getAgentConfig, OPRIMUSMODEL } from '@/config/agents.config'
+import { getSystemPrompt } from '@/types/agent'
+import type { AgentInput, AgentOutput } from '@/types/agent'
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '')
-const model = genAI.getGenerativeModel({ model: 'gemini-3.1-pro-preview' })
+const ThreeSceneSchema = {
+  type: SchemaType.OBJECT,
+  properties: {
+    enabled: { type: SchemaType.BOOLEAN },
+    sceneCode: { type: SchemaType.STRING, description: "Full React Three Fiber component code" },
+    shaders: { type: SchemaType.STRING, description: "GLSL vertex and fragment shaders" },
+    multimodalAssets: { type: SchemaType.STRING, description: "Procedural CanvasTexture synthesis logic or HDRI base64 logic to prevent empty scenes." },
+    animationLoop: { type: SchemaType.STRING, description: "useFrame logic reading global velocity" }
+  },
+  required: ["enabled"]
+};
 
-export async function runThreeSpecialist(
-  request: GenerationRequest,
-  designSpec: DesignSpec,
-  ragContext?: string
-): Promise<ThreeScene> {
-  const palette = designSpec.colorPalette ?? ['#6366f1', '#8b5cf6', '#a78bfa', '#c4b5fd']
+export async function threeSpecialistAgent(input: AgentInput, apiKey: string): Promise<AgentOutput> {
+  const startTime = Date.now();
+  const client = getGeminiClient();
+  const config = getAgentConfig('three-specialist')
 
-  return {
-    sceneCode: `import { Canvas } from '@react-three/fiber'\nimport { Float, Environment } from '@react-three/drei'\nexport function Scene() {\n  return (\n    <Canvas camera={{ position: [0, 0, 5] }}>\n      <Environment preset="city" />\n      <Float speed={2}>\n        <mesh>\n          <icosahedronGeometry args={[1, 4]} />\n          <meshStandardMaterial color="${palette[0]}" wireframe />\n        </mesh>\n      </Float>\n    </Canvas>\n  )\n}`,
-    shaders: [],
-    lights: ['<ambientLight intensity={0.5} />', `<pointLight position={[10, 10, 10]} color="${palette[1]}" />`],
-    cameraConfig: '{ position: [0, 0, 5], fov: 75 }',
-    performanceTier: 'medium',
+  const includeThreeD = input.contentBlueprint?.includeThreeD ?? input.threeScene?.enabled ?? true;
+
+  const userPrompt = `Generate a WebGPU spatial experience.
+Content needs 3D? ${includeThreeD}
+
+SHARED SEMANTIC TENSOR (CRITICAL):
+${JSON.stringify(input.semanticTensor, null, 2)}
+
+RULES:
+1. Synthesize textures procedurally (e.g. FBM noise injected into a shaderMaterial) or utilize robust base64 HDRI snippets in 'multimodalAssets'. Do not leave placeholders.
+2. Observe the 'materiality' from the Tensor.
+3. The animation loop MUST assume \`uVelocity\` is passed to the shader via the unified GSAP ticker (not calculated internally).
+Return strictly the JSON object.`;
+
+  try {
+    const { data: response, tokens } = await client.generateJSON<any>({
+      systemPrompt: getSystemPrompt('three-specialist', input.activePatches),
+      userPrompt,
+      temperature: config.temperature, 
+      topP: config.topP,
+      topK: config.topK,
+      maxOutputTokens: config.maxOutputTokens,
+      thinkingBudget: config.thinkingBudget,
+      responseSchema: ThreeSceneSchema as any
+    });
+
+    const durationMs = Date.now() - startTime;
+
+    return {
+      jobId: input.jobId, agentId: "three-specialist", stepNumber: input.stepNumber,
+      payload: { threeScene: response.enabled ? response : { enabled: false } },
+      success: true, tokensIn: tokens.in, tokensOut: tokens.out, durationMs,
+      trace: {
+        agentName: "three-specialist", stepNumber: input.stepNumber, jobId: input.jobId,
+        startedAt: new Date(Date.now() - durationMs).toISOString(), completedAt: new Date().toISOString(),
+        durationMs, tokensIn: tokens.in, tokensOut: tokens.out,
+        inputHash: "three", outputHash: "three", outputSizeBytes: 0, modelUsed: OPRIMUSMODEL,
+        logs: [], success: true, retryCount: 0
+      }
+    };
+  } catch (error) {
+    throw error;
   }
 }

@@ -1,55 +1,200 @@
-import { GoogleGenerativeAI } from '@google/generative-ai'
-import type { GenerationRequest } from '@/types/generation'
-import type { DesignSpec, AnimationConfig } from '@/types/agent'
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import type { AgentInput, AgentOutput, AnimationConfig } from "@/types/agent";
+import type { AgentTrace } from "@/types/domain";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '')
-const model = genAI.getGenerativeModel({ model: 'gemini-3.1-pro-preview' })
+const ANIMATION_ENGINEER_SYSTEM = `Tu es l'Animation Engineer d'O-Primus.
+Ton rôle : Générer des animations GSAP précises et domain-aware.
 
-export async function runAnimationEngineer(
-  request: GenerationRequest,
-  designSpec: DesignSpec,
-  ragContext?: string
-): Promise<AnimationConfig> {
-  const ragSection = ragContext
-    ? `\n\nEXTRAITS DE CODE PREMIUM (inspire-toi, n'utilise pas mot pour mot):\n${ragContext}`
-    : ''
+Constraints strictes :
+1. ScrollTrigger pour les reveals (start: "top 75%", end: "bottom bottom")
+2. Stagger pour les listes (0.05-0.1s entre éléments)
+3. Spring pour les hover (tension: 300, friction: 20)
+4. Pas d'animations chaotiques pour comptable/cabinet-avocat
+5. Animations dynamiques OK pour tech/saas/agency
+6. Durées : page load 1.2s, scroll reveal 0.8s, hover 0.3s
 
-  const prompt = `
-Tu es un ingénieur d'animation senior spécialisé GSAP + Lenis au niveau Awwwards.
-Génère une config d'animation production-ready pour ce projet.
+SORTIE : JSON valide AnimationConfig uniquement. Pas de texte.`;
 
-STYLE: ${designSpec.style ?? 'dark-premium'}
-MOOD: ${designSpec.mood ?? 'sophisticated'}
-INTENSITÉ: ${request.animationIntensity ?? 'moderate'}
-ANIMATIONS: ${designSpec.primaryAnimations?.join(', ') ?? 'scroll-reveal, stagger'}
-SECTIONS: ${designSpec.sections?.join(', ') ?? 'hero, features, cta, footer'}
-${ragSection}
+const ANIMATION_ENGINEER_PROMPT = `Génère une AnimationConfig complète pour cette landing page.
 
-Retourne UNIQUEMENT ce JSON:
+DomainProfile :
+\`\`\`json
+{domainProfile}
+\`\`\`
+
+DesignSpec :
+\`\`\`json
+{designSpec}
+\`\`\`
+
+ContentBlueprint sections :
+\`\`\`json
+{sections}
+\`\`\`
+
+RÈGLES :
+- Si tone = "formal" (comptable) : animations subtiles, ease: "power1.inOut"
+- Si tone = "friendly" (artisan) : animations amicales, ease: "back.out"
+- Si tone = "luxury" : animations lentes, ease: "sine.inOut"
+- Générer ScrollTrigger + stagger pour chaque section
+- Domaine comptable : maxAnimationIntensity = "subtle"
+- Domaine tech/saas : maxAnimationIntensity = "intense"
+- Inclure du GSAP code brut à injecter dans animations.ts
+
+Retourne UNIQUEMENT du JSON valide :
 {
-  "gsapTimeline": "code TypeScript complet pour la timeline GSAP principale",
-  "scrollTriggers": ["code ScrollTrigger section 1", "code ScrollTrigger section 2"],
-  "lenisConfig": "code d'initialisation Lenis",
-  "microInteractions": ["hover effect 1", "hover effect 2", "cursor effect"],
-  "pageTransition": "code de transition entre pages"
-}
-`
+  "animationConfig": {
+    "timings": {
+      "pageLoadDuration": 1.2,
+      "scrollRevealDuration": 0.8,
+      "hoverDuration": 0.3,
+      "staggerAmount": 0.05
+    },
+    "hero": {
+      "badge": { "type": "fade-in", "delay": 0.1, "duration": 0.8 },
+      "heading": { "type": "stagger-lines", "delay": 0.3, "lineDuration": 0.6 },
+      "subheading": { "type": "fade-in", "delay": 0.8, "duration": 0.6 },
+      "cta": { "type": "scale-spring", "delay": 1.2, "springTension": 300 }
+    },
+    "sections": [
+      {
+        "sectionId": "features",
+        "entrance": {
+          "type": "scroll-trigger-reveal",
+          "scrollTrigger": {
+            "trigger": ".features-section",
+            "start": "top 75%",
+            "end": "bottom bottom",
+            "scrub": false
+          },
+          "animation": {
+            "duration": 0.8,
+            "ease": "power2.out"
+          }
+        },
+        "children": [
+          {
+            "selector": ".feature-card",
+            "animation": {
+              "type": "fade-in",
+              "delay": 0,
+              "duration": 0.6
+            }
+          }
+        ]
+      }
+    ],
+    "interactions": {
+      "buttons": {
+        "hoverEffect": "scale-spring",
+        "springConfig": { "tension": 300, "friction": 20 }
+      },
+      "cards": {
+        "hoverEffect": "lift-shadow",
+        "parallaxOnScroll": true
+      }
+    },
+    "domainConstraints": {
+      "maxAnimationIntensity": "subtle" | "moderate" | "intense",
+      "reasoning": "string"
+    },
+    "gsapCode": "// GSAP code brut à injecter..."
+  }
+}`;
 
-  const result = await model.generateContent(prompt)
-  const text = result.response.text().trim()
+export async function animationEngineerAgent(
+  input: AgentInput,
+  apiKey: string
+): Promise {
+  const startTime = Date.now();
+  const genAI = new GoogleGenerativeAI(apiKey);
+  const model = genAI.getGenerativeModel({
+    model: "gemini-2.0-flash-thinking-exp-01-21",
+    systemInstruction: ANIMATION_ENGINEER_SYSTEM,
+    generationConfig: {
+      temperature: 1,
+      maxOutputTokens: 16000,
+      thinkingTokens: 8000,
+    },
+  });
+
+  const sections = input.contentBlueprint?.sections?.map(s => ({
+    id: s.id,
+    type: s.type,
+    nodeCount: s.nodes?.length || 0,
+  })) || [];
+
+  const systemPrompt = ANIMATION_ENGINEER_PROMPT
+    .replace("{domainProfile}", JSON.stringify(input.domainProfile, null, 2))
+    .replace("{designSpec}", JSON.stringify(input.designSpec, null, 2))
+    .replace("{sections}", JSON.stringify(sections, null, 2));
 
   try {
-    const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
-    return JSON.parse(clean) as AnimationConfig
-  } catch {
-    return {
-      gsapTimeline: `gsap.fromTo('.hero', { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1.2, ease: 'power4.out' })`,
-      scrollTriggers: [
-        `ScrollTrigger.create({ trigger: '.features', start: 'top 80%', onEnter: () => gsap.from('.feature-card', { opacity: 0, y: 40, stagger: 0.15 }) })`,
-      ],
-      lenisConfig: `new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true })`,
-      microInteractions: [`gsap.to('.cta-btn', { scale: 1.05, duration: 0.3, ease: 'power2.out' })`],
-      pageTransition: `gsap.to('.page', { opacity: 0, duration: 0.4, ease: 'power2.inOut' })`,
+    const response = await model.generateContent(systemPrompt);
+    const content = response.content.parts[0];
+
+    if (!content || content.type !== "text") {
+      throw new Error("Invalid response format from Animation Engineer");
     }
+
+    const parsed = JSON.parse(content.text);
+    const animationConfig = parsed.animationConfig as AnimationConfig;
+
+    const durationMs = Date.now() - startTime;
+
+    const trace: AgentTrace = {
+      agentName: "animation-engineer",
+      stepNumber: input.stepNumber,
+      startedAt: new Date(Date.now() - durationMs).toISOString(),
+      completedAt: new Date().toISOString(),
+      status: "completed",
+      durationMs,
+      tokensIn: response.usageMetadata?.promptTokens || 0,
+      tokensOut: response.usageMetadata?.candidatesTokens || 0,
+    };
+
+    return {
+      jobId: input.jobId,
+      agentId: "animation-engineer",
+      stepNumber: input.stepNumber,
+      payload: { animationConfig },
+      success: true,
+      tokensUsed: {
+        tokensIn: response.usageMetadata?.promptTokens || 0,
+        tokensOut: response.usageMetadata?.candidatesTokens || 0,
+        thinkingTokens: response.usageMetadata?.promptTokens || 0,
+        durationMs,
+      },
+      trace,
+    };
+  } catch (error) {
+    const durationMs = Date.now() - startTime;
+    return {
+      jobId: input.jobId,
+      agentId: "animation-engineer",
+      stepNumber: input.stepNumber,
+      payload: undefined,
+      success: false,
+      error: {
+        message: error instanceof Error ? error.message : "Unknown error",
+        code: "ANIMATION_ENGINEER_ERROR",
+        recoverable: true,
+      },
+      tokensUsed: {
+        tokensIn: 0,
+        tokensOut: 0,
+        durationMs,
+      },
+      trace: {
+        agentName: "animation-engineer",
+        stepNumber: input.stepNumber,
+        startedAt: new Date(Date.now() - durationMs).toISOString(),
+        completedAt: new Date().toISOString(),
+        status: "failed",
+        durationMs,
+        tokensIn: 0,
+        tokensOut: 0,
+      },
+    };
   }
 }

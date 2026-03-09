@@ -1,59 +1,27 @@
-import type { GenerationRequest, AnimationStyle, AnimationIntensity } from '@/types/generation'
-
-type LegacyIntensity = 'subtle' | 'moderate' | 'intense'
-type LegacyStyle = AnimationStyle | undefined
+import type { GenerationRequest } from '@/types/generation'
 
 export type LegacyGenerateBody = {
   prompt: string
-  style?: LegacyStyle
-  intensity?: LegacyIntensity
+  style?: string
+  intensity?: 'subtle' | 'moderate' | 'intense'
   includeThreeD?: boolean
   colorPalette?: string
   targetAudience?: string
   industry?: string
 }
 
-export type CanonicalGenerateBody = {
-  userIntent: string
-  style: AnimationStyle
-  intensity: AnimationIntensity
-  includeThreeD: boolean
-  colorPalette?: string
-  targetAudience?: string
-}
+export type CanonicalGenerateBody = LegacyGenerateBody
 
-function mapIntensity(x?: LegacyIntensity | AnimationIntensity): AnimationIntensity {
-  if (!x) return 'medium'
-  if (x === 'moderate') return 'medium'
-  if (x === 'intense') return 'aggressive'
-  if (x === 'subtle' || x === 'medium' || x === 'aggressive') return x
-  return 'medium'
-}
-
-function mapStyle(x?: AnimationStyle): AnimationStyle {
-  return x ?? 'dark-premium'
-}
-
-export function normalizeGenerateBody(body: LegacyGenerateBody | CanonicalGenerateBody): GenerationRequest {
-  // Nouveau contrat
-  if ('userIntent' in body) {
-    return {
-      userIntent: body.userIntent,
-      style: body.style,
-      intensity: body.intensity,
-      includeThreeD: body.includeThreeD,
-      colorPalette: body.colorPalette,
-      targetAudience: body.targetAudience,
-    }
-  }
-
-  // Ancien contrat
+export function normalizeGenerateBody(
+  body: LegacyGenerateBody | CanonicalGenerateBody
+): GenerationRequest {
   return {
-    userIntent: body.prompt,
-    style: mapStyle(body.style),
-    intensity: mapIntensity(body.intensity),
+    prompt: body.prompt,
+    style: body.style,
+    animationIntensity: body.intensity,
     includeThreeD: Boolean(body.includeThreeD),
-    colorPalette: body.colorPalette,
+    colorPreference: body.colorPalette,
     targetAudience: body.targetAudience ?? body.industry,
+    industry: body.industry,
   }
 }

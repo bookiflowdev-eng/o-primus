@@ -1,107 +1,109 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { randomUUID } from 'crypto'
+import { v4 as uuidv4 } from 'uuid'
 import { supabaseAdmin } from '@/lib/supabase'
-import { runAgentPipeline } from '@/agents/router'
-import { normalizeGenerateBody } from '@/lib/contracts/normalize-generation-request'
+import { runGenerationPipeline } from '@/lib/pipeline/pipeline-runner'
+import type { GenerationJob } from '@/types/domain'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { checkAndDecrementQuota } from '@/lib/quota'
+import { unstable_after as after } from 'next/server'
 
-// Schéma "union" : ancien + nouveau
-const NewSchema = z.object({
-  userIntent: z.string().min(10).max(2000),
-  style: z.enum(['scroll-reveal', 'parallax', '3d-immersive', 'glassmorphism', 'minimal-clean', 'dark-premium']),
-  intensity: z.enum(['subtle', 'medium', 'aggressive']),
-  includeThreeD: z.boolean(),
-  colorPalette: z.string().optional(),
-  targetAudience: z.string().optional(),
-})
-
-const LegacySchema = z.object({
+const GenerateRequestSchema = z.object({
   prompt: z.string().min(10),
-  style: z.enum(['scroll-reveal', 'parallax', '3d-immersive', 'glassmorphism', 'minimal-clean', 'dark-premium']).optional(),
-  intensity: z.enum(['subtle', 'moderate', 'intense']).optional(),
-  includeThreeD: z.boolean().optional().default(false),
-  colorPalette: z.string().optional(),
-  targetAudience: z.string().optional(),
   industry: z.string().optional(),
+  businessModel: z.string().optional(),
+  companyStage: z.string().optional(),
+  style: z.string().optional(),
+  animationIntensity: z.enum(['subtle', 'moderate', 'intense']).optional(),
+  includeThreeD: z.boolean().optional(),
+  colorPreference: z.string().optional(),
+  targetAudience: z.string().optional(),
 })
-
-const BodySchema = z.union([NewSchema, LegacySchema])
 
 export async function POST(req: NextRequest) {
-  const startTime = Date.now()
-
-  let body: unknown
   try {
-    body = await req.json()
-  } catch {
-    return NextResponse.json({ error: 'Body JSON invalide' }, { status: 400 })
-  }
+    const session = await getServerSession(authOptions)
+    const userId = session?.user && (session.user as any).id
 
-  const parsed = BodySchema.safeParse(body)
-  if (!parsed.success) {
-    return NextResponse.json({ error: 'Paramètres invalides', details: parsed.error.flatten() }, { status: 422 })
-  }
+    if (!userId) {
+      return NextResponse.json({ error: 'Accès refusé. Authentification requise.' }, { status: 401 })
+    }
 
-  const request = normalizeGenerateBody(parsed.data as any)
-  const outputId = randomUUID()
+    const body = await req.json()
+    const validated = GenerateRequestSchema.parse(body)
 
-  // userId: header x-user-id (new) OR Bearer token (legacy)
-  const xUser = req.headers.get('x-user-id')
-  const auth = req.headers.get('authorization')
-  const userId = xUser ?? (auth ? auth.replace('Bearer ', '') : 'anonymous')
+    const canGenerate = await checkAndDecrementQuota(userId)
+    if (!canGenerate) {
+      return NextResponse.json({ error: 'Quota épuisé. Veuillez upgrader votre plan.' }, { status: 402 })
+    }
 
-  // DB: always store canonical request
-  const { error: insertError } = await supabaseAdmin.from('generations').insert({
-    id: outputId,
-    user_id: userId,
-    request,
-    status: 'generating',
-    created_at: new Date().toISOString(),
-  })
+    const jobId = uuidv4()
+    const job: GenerationJob = {
+      id: jobId,
+      userId,
+      request: validated,
+      status: 'queued',
+      currentStep: 0,
+      completedSteps: [],
+      failedSteps: [],
+      correctionRound: 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    }
 
-  if (insertError) {
-    return NextResponse.json({ error: 'Erreur base de données' }, { status: 500 })
-  }
+    const { error: dbError } = await supabaseAdmin.from('jobs').insert({
+      id: jobId,
+      user_id: userId,
+      status: 'queued',
+      request: validated,
+      created_at: job.createdAt,
+      updated_at: job.updatedAt,
+    })
 
-  try {
-    const output = await runAgentPipeline(request, outputId, userId)
+    if (dbError) {
+      console.error('[Generate API] DB Error:', dbError)
+      return NextResponse.json({ error: 'Erreur d\'initialisation' }, { status: 500 })
+    }
 
-    await supabaseAdmin.from('generations').update({
-      files: output.files,
-      validation_score: output.validationScore,
-      status: 'completed',
-      duration_ms: Date.now() - startTime,
-      completed_at: new Date().toISOString(),
-    }).eq('id', outputId)
+    // Exécution isolée garantissant l'intégrité de la promesse hors du scope HTTP Vercel
+    after(async () => {
+      try {
+        await executeJobAsync(job)
+      } catch (err) {
+        console.error(`[Background] Crash fatal pour le job ${jobId}:`, err)
+      }
+    })
 
-    return NextResponse.json({
-      success: true,
-      id: outputId,
-      files: output.files,
-      validationScore: output.validationScore,
-      durationMs: Date.now() - startTime,
-    }, { status: 200 })
-
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'Erreur inconnue'
-    await supabaseAdmin.from('generations').update({
-      status: 'failed',
-      error_message: message,
-      duration_ms: Date.now() - startTime,
-    }).eq('id', outputId)
-
-    return NextResponse.json({ error: 'Pipeline échoué', details: message }, { status: 500 })
+    return NextResponse.json({ jobId, status: 'queued', pollUrl: `/api/jobs/${jobId}` }, { status: 202 })
+  } catch (error) {
+    const err = error instanceof z.ZodError
+      ? { error: 'Validation échouée', details: error.errors }
+      : { error: error instanceof Error ? error.message : 'Erreur inattendue' }
+    return NextResponse.json(err, { status: 400 })
   }
 }
 
-// GET ?id=...
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url)
-  const id = searchParams.get('id')
-  if (!id) return NextResponse.json({ error: 'Paramètre id manquant' }, { status: 400 })
+async function executeJobAsync(job: GenerationJob): Promise<void> {
+  try {
+    const context = await runGenerationPipeline(job)
+    const output = context.agentStates['code-orchestrator']?.payload || {}
+    const validation = context.agentStates['quality-validator']?.payload?.validationScore
 
-  const { data, error } = await supabaseAdmin.from('generations').select('*').eq('id', id).single()
-  if (error || !data) return NextResponse.json({ error: 'Génération introuvable' }, { status: 404 })
-
-  return NextResponse.json(data, { status: 200 })
+    await supabaseAdmin.from('jobs').update({
+      status: 'completed',
+      current_step: 6,
+      generated_files: output.generatedFiles || {},
+      validation_score: validation || null,
+      updated_at: new Date().toISOString(),
+      completed_at: new Date().toISOString(),
+    }).eq('id', job.id)
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : String(error)
+    await supabaseAdmin.from('jobs').update({
+      status: 'failed',
+      error: errorMsg,
+      updated_at: new Date().toISOString(),
+    }).eq('id', job.id)
+  }
 }
