@@ -1,0 +1,19 @@
+# Dépendances & Next.js
+node_modules/
+.next/
+out/
+build/
+
+# Variables d'environnement (Sécurité)
+.env
+.env.*
+!.env.example
+
+# 🔴 IGNORER TOUS LES DOSSIERS CACHÉS ET IA (.roo, .trae, etc)
+.*
+# ✅ EXCEPTIONS VITALES (On garde seulement ça)
+!/.git/
+!/.github/
+!/.gitignore
+!/.eslintrc*
+!/.prettierrc*

@@ -1,0 +1,557 @@
+.
+|____architecture.txt
+|____codebase_integrale.txt
+|____docs
+| |____architecture.md
+| |____prompt-engineering.md
+|____infra
+| |____cloud-run.yaml
+| |____firestore.indexes.json
+| |____firestore.rules
+|____library
+| |____clone.log
+| |____embeddings
+| |____repos
+| | |____ariakit__ariakit
+| | | |____biome.json
+| | | |____blog
+| | | |____CHANGELOG.md
+| | | |____code_of_conduct.md
+| | | |____components
+| | | |____contributing.md
+| | | |____examples
+| | | |____generate-images.config.ts
+| | | |____guide
+| | | |____logo
+| | | |____nextjs
+| | | |____package.json
+| | | |____package-lock.json
+| | | |____packages
+| | | |____patches
+| | | |____playwright.config.ts
+| | | |____postcss.config.cjs
+| | | |____prettier.config.js
+| | | |____readme.md
+| | | |____renovate.json
+| | | |____scripts
+| | | |____site
+| | | |____tailwind.config.cjs
+| | | |____templates
+| | | |____tsconfig.json
+| | | |____tsconfig.solid.json
+| | | |____vercel.json
+| | | |____vitest.config.ts
+| | | |____vitest.setup.ts
+| | | |____website
+| | | |____wrangler.jsonc
+| | |____darkroomco__lenis
+| | | |____biome.json
+| | | |____CONTRIBUTING.md
+| | | |____LICENSE
+| | | |____MANIFESTO.md
+| | | |____package.json
+| | | |____pnpm-lock.yaml
+| | | |____pnpm-workspace.yaml
+| | | |____README.md
+| | | |____tsconfig.json
+| | | |____tsup.config.ts
+| | | |____tsup.core.ts
+| | |____emilkowalski___sonner
+| | |____emilkowalski_sonner
+| | | |____FUNDING.yml
+| | | |____FUNDING.yml
+| | | |____LICENSE.md
+| | | |____LICENSE.md
+| | | |____package.json
+| | | |____package.json
+| | | |____playwright.config.ts
+| | | |____playwright.config.ts
+| | | |____pnpm-lock.yaml
+| | | |____pnpm-lock.yaml
+| | | |____pnpm-workspace.yaml
+| | | |____pnpm-workspace.yaml
+| | | |____README.md
+| | | |____README.md
+| | | |____src
+| | | |____src
+| | | |____test
+| | | |____tsconfig.json
+| | | |____tsconfig.json
+| | | |____turbo.json
+| | | |____turbo.json
+| | | |____website
+| | |____emilkowalski___vaul
+| | |____emilkowalski_vaul
+| | | |____FUNDING.yml
+| | | |____FUNDING.yml
+| | | |____LICENSE.md
+| | | |____LICENSE.md
+| | | |____package.json
+| | | |____package.json
+| | | |____playwright.config.ts
+| | | |____playwright.config.ts
+| | | |____pnpm-lock.yaml
+| | | |____pnpm-lock.yaml
+| | | |____pnpm-workspace.yaml
+| | | |____pnpm-workspace.yaml
+| | | |____README.md
+| | | |____README.md
+| | | |____src
+| | | |____src
+| | | |____test
+| | | |____tsconfig.json
+| | | |____tsconfig.json
+| | | |____turbo.json
+| | | |____turbo.json
+| | |____facebook__stylex
+| | | |____CHANGELOG.md
+| | | |____examples
+| | | |____flow-typed
+| | | |____flow-typed.config.json
+| | | |____LICENSE
+| | | |____package.json
+| | | |____packages
+| | | |____README.md
+| | | |____tools
+| | | |____yarn.lock
+| | |____framer__motion
+| | | |____AGENTS.md
+| | | |____CHANGELOG.md
+| | | |____CLAUDE.md
+| | | |____CONTRIBUTING.md
+| | | |____FUNDING.json
+| | | |____lerna.json
+| | | |____LICENSE.md
+| | | |____Makefile
+| | | |____package.json
+| | | |____playwright.config.ts
+| | | |____README.md
+| | | |____turbo.json
+| | | |____yarn.lock
+| | |____ibelick__motion-primitives
+| | | |____components.json
+| | | |____CONTRIBUTING.md
+| | | |____LICENCE.md
+| | | |____mdx-components.tsx
+| | | |____next.config.mjs
+| | | |____package.json
+| | | |____package-lock.json
+| | | |____postcss.config.mjs
+| | | |____prettier.config.js
+| | | |____README.md
+| | | |____tsconfig.json
+| | |____juliangarnier__anime
+| | | |____assets
+| | | |____CONTRIBUTING.md
+| | | |____dist
+| | | |____examples
+| | | |____LICENSE.md
+| | | |____package.json
+| | | |____package-lock.json
+| | | |____README.md
+| | | |____rollup.config.js
+| | | |____src
+| | | |____tests
+| | | |____tsconfig.json
+| | | |____tsconfig.types.json
+| | |____leerob__leerob.io
+| | | |____app
+| | | |____mdx-components.tsx
+| | | |____next.config.ts
+| | | |____package.json
+| | | |____pnpm-lock.yaml
+| | | |____postcss.config.mjs
+| | | |____README.md
+| | | |____tsconfig.json
+| | |____locomotivemtl__locomotive-scroll
+| | | |____context7.json
+| | | |____LICENSE
+| | | |____package.json
+| | | |____package-lock.json
+| | | |____packages
+| | | |____postcss.config.cjs
+| | | |____README.md
+| | | |____scripts
+| | | |____turbo.json
+| | | |____vercel.json
+| | | |____www
+| | |____mattboldt__typed.js
+| | | |____CODE_OF_CONDUCT.md
+| | | |____index.d.ts
+| | | |____index.html
+| | | |____LICENSE.txt
+| | | |____LIMITED_COMMERCIAL_LICENSE.md
+| | | |____logo-cropped.png
+| | | |____logo.png
+| | | |____logo-white-bg.png
+| | | |____package.json
+| | | |____package-lock.json
+| | | |____README.md
+| | | |____typed.d.ts
+| | | |____UNLIMITED_COMMERCIAL_LICENSE.md
+| | |____motion-canvas__motion-canvas
+| | | |____CHANGELOG.md
+| | | |____CODE_OF_CONDUCT.md
+| | | |____commitlint.config.js
+| | | |____CONTRIBUTING.md
+| | | |____FUNDING.yml
+| | | |____lerna.json
+| | | |____LICENSE
+| | | |____package.json
+| | | |____package-lock.json
+| | | |____packages
+| | | |____README.md
+| | | |____SECURITY.md
+| | | |____tsdoc.json
+| | |____mrdoob__three.js
+| | | |____build
+| | | |____docs
+| | | |____editor
+| | | |____eslint.config.js
+| | | |____examples
+| | | |____files
+| | | |____icon.png
+| | | |____LICENSE
+| | | |____llms.txt
+| | | |____manual
+| | | |____package.json
+| | | |____package-lock.json
+| | | |____README.md
+| | | |____SECURITY.md
+| | | |____src
+| | | |____test
+| | | |____utils
+| | |____pixijs__pixijs
+| | | |____eslint.config.mjs
+| | | |____examples
+| | | |____LICENSE
+| | | |____package.json
+| | | |____package-lock.json
+| | | |____playground
+| | | |____README.md
+| | | |____scripts
+| | | |____src
+| | | |____tests
+| | | |____transcoders
+| | | |____tsconfig.json
+| | | |____types
+| | |____pmndrs__drei
+| | | |____chromatic.config.json
+| | | |____CODE_OF_CONDUCT.md
+| | | |____CONTRIBUTING.md
+| | | |____eslint.config.mjs
+| | | |____LICENSE
+| | | |____package.json
+| | | |____README.md
+| | | |____release.config.js
+| | | |____rollup.config.js
+| | | |____src
+| | | |____tsconfig.json
+| | | |____vite.config.ts
+| | | |____yarn.lock
+| | |____pmndrs__postprocessing
+| | | |____esbuild.js
+| | | |____eslint.config.js
+| | | |____LICENSE.md
+| | | |____package.json
+| | | |____pnpm-lock.yaml
+| | | |____README.md
+| | | |____src
+| | | |____tsconfig.json
+| | | |____tsconfig.types.json
+| | |____pmndrs__react-spring
+| | | |____CONTRIBUTING.md
+| | | |____cypress.config.ts
+| | | |____jest.config.js
+| | | |____LICENSE
+| | | |____package.json
+| | | |____README.md
+| | | |____renovate.json
+| | | |____tsconfig.json
+| | | |____tsup.config.base.ts
+| | | |____turbo.json
+| | | |____yarn.lock
+| | |____pmndrs__react-three-fiber
+| | | |____babel.config.js
+| | | |____CONTRIBUTING.md
+| | | |____jest.config.js
+| | | |____LICENSE
+| | | |____package.json
+| | | |____packages
+| | | |____readme.md
+| | | |____tsconfig.json
+| | | |____vite.config.ts
+| | | |____yarn.lock
+| | |____pmndrs__react-three-offscreen
+| | | |____bun.lockb
+| | | |____front.jpg
+| | | |____LICENSE
+| | | |____package.json
+| | | |____README.md
+| | | |____rollup.config.js
+| | | |____src
+| | | |____tsconfig.json
+| | |____radix-ui__primitives
+| | | |____CODE_OF_CONDUCT.md
+| | | |____context7.json
+| | | |____cypress.config.ts
+| | | |____eslint.config.mjs
+| | | |____LICENSE
+| | | |____package.json
+| | | |____packages
+| | | |____philosophy.md
+| | | |____pnpm-lock.yaml
+| | | |____pnpm-workspace.yaml
+| | | |____primitives.png
+| | | |____README.md
+| | | |____release-process.md
+| | | |____vitest.config.mts
+| | |____rikschennink__fitty
+| | | |____assets
+| | | |____dist
+| | | |____header.svg
+| | | |____index.d.ts
+| | | |____index.html
+| | | |____LICENSE
+| | | |____package.json
+| | | |____package-lock.json
+| | | |____README.md
+| | | |____rollup.config.js
+| | | |____src
+| | | |____test.html
+| | |____shadcn-ui__ui
+| | | |____CONTRIBUTING.md
+| | | |____LICENSE.md
+| | | |____package.json
+| | | |____pnpm-lock.yaml
+| | | |____pnpm-workspace.yaml
+| | | |____prettier.config.cjs
+| | | |____README.md
+| | | |____SECURITY.md
+| | | |____tsconfig.json
+| | | |____turbo.json
+| | | |____vitest.config.ts
+| | | |____vitest.workspace.ts
+| | |____split-type__split-type
+| | | |____CONTRIBUTING.md
+| | | |____lib
+| | | |____package.json
+| | | |____README.md
+| | | |____rollup.config.js
+| | | |____scripts
+| | | |______stories__
+| | | |______tests__
+| | | |____yarn.lock
+| | |____steven-tey__precedent
+| | | |____app
+| | | |____components
+| | | |____lib
+| | | |____LICENSE.md
+| | | |____next.config.js
+| | | |____package.json
+| | | |____pnpm-lock.yaml
+| | | |____postcss.config.js
+| | | |____prettier.config.js
+| | | |____public
+| | | |____README.md
+| | | |____robots.txt
+| | | |____tailwind.config.js
+| | | |____tsconfig.json
+| | |____theatre-js__theatre
+| | | |____CHANGELOG.md
+| | | |____compat-tests
+| | | |____CONTRIBUTING.md
+| | | |____credits.txt
+| | | |____devEnv
+| | | |____docker-compose.yml
+| | | |____examples
+| | | |____jest.compat-tests.config.js
+| | | |____jest.config.js
+| | | |____knip.config.json
+| | | |____lerna.json
+| | | |____LICENSE
+| | | |____Notes.md
+| | | |____package.json
+| | | |____packages
+| | | |____README.md
+| | | |____render.yaml
+| | | |____tsconfig.base.json
+| | | |____wallaby.conf.js
+| | | |____yarn.lock
+| | |____vercel__ai
+| | | |____AGENTS.md
+| | | |____architecture
+| | | |____assets
+| | | |____CHANGELOG.md
+| | | |____CLAUDE.md
+| | | |____CODE_OF_CONDUCT.md
+| | | |____content
+| | | |____contributing
+| | | |____CONTRIBUTING.md
+| | | |____examples
+| | | |____LICENSE
+| | | |____package.json
+| | | |____packages
+| | | |____pnpm-lock.yaml
+| | | |____pnpm-workspace.yaml
+| | | |____README.md
+| | | |____skills
+| | | |____socket.yaml
+| | | |____tools
+| | | |____tsconfig.json
+| | | |____tsconfig.with-examples.json
+| | | |____turbo.json
+| | |____vercel__commerce
+| | | |____components
+| | | |____lib
+| | | |____license.md
+| | | |____next.config.ts
+| | | |____package.json
+| | | |____pnpm-lock.yaml
+| | | |____postcss.config.mjs
+| | | |____README.md
+| | | |____tsconfig.json
+|____next-env.d.ts
+|____package.json
+|____package-lock.json
+|____postcss.config.mjs
+|____public
+| |____fonts
+| |____models
+|____scripts
+| |____clone-repos.sh
+| |____index-repos.ts
+| |____repos.config.ts
+|____src
+| |____agents
+| | |____animation-engineer.ts
+| | |____code-orchestrator.ts
+| | |____content-architect.ts
+| | |____design-analyzer.ts
+| | |____design-strategist.ts
+| | |____domain-profiler.ts
+| | |____quality-validator.ts
+| | |____rag-retriever.ts
+| | |____router.ts
+| | |____three-specialist.ts
+| |____app
+| | |____api
+| | | |____agent
+| | | |____auth
+| | | |____generate
+| | | |____generations
+| | | |____jobs
+| | | |____nexus
+| | | |____stripe
+| | | |____validate
+| | | |____webhooks
+| | |____auth
+| | | |____page.tsx
+| | |____dashboard
+| | | |____page.tsx
+| | |____globals.css
+| | |____laboratoire
+| | | |____page.tsx
+| | |____layout.tsx
+| | |____nexus
+| | | |_____components
+| | | |____layout.tsx
+| | | |____page.tsx
+| | |____page.tsx
+| | |____pricing
+| | | |____page.tsx
+| | |____result
+| | | |____[id]
+| |____components
+| | |____generator
+| | | |____GenerationProgress.tsx
+| | | |____GeneratorForm.tsx
+| | | |____IntensitySlider.tsx
+| | | |____StyleSelector.tsx
+| | |____layout
+| | | |____AppShell.tsx
+| | | |____Footer.tsx
+| | | |____Navbar.tsx
+| | |____preview
+| | | |____CodePreview.tsx
+| | | |____LivePreview.tsx
+| | |____providers
+| | | |____AuthProvider.tsx
+| | | |____NexusProvider.tsx
+| | | |____SmoothScrollProvider.tsx
+| | |____ui
+| | | |____Badge.tsx
+| | | |____Button.tsx
+| | | |____Card.tsx
+| |____config
+| | |____agent-graph.config.ts
+| | |____agents.config.ts
+| | |____plans.config.ts
+| | |____styles.config.ts
+| |____hooks
+| | |____nexus
+| | | |____useForensicParser.ts
+| | | |____useTelemetryStream.ts
+| | |____useAgentStream.ts
+| | |____useAuth.ts
+| | |____useBrowserAgent.ts
+| | |____useGeneration.ts
+| | |____useMutator.ts
+| | |____useNeuralBridge.ts
+| | |____useQuota.ts
+| | |____useVault.ts
+| | |____useWorkspace.ts
+| |____lib
+| | |____agent-validator.ts
+| | |____contracts
+| | | |____forensic-source.ts
+| | | |____normalize-generation-request.ts
+| | | |____soty-probe.ts
+| | |____embedding.ts
+| | |____gemini-client.ts
+| | |____gemini.ts
+| | |____meta-learning.ts
+| | |____nexus-tools
+| | | |____browser-action.tool.ts
+| | | |____mariner.tool.ts
+| | | |____registry.ts
+| | | |____surgeon.tool.ts
+| | | |____svg-forge.tool.ts
+| | | |____visual-cortex.tool.ts
+| | |____pipeline
+| | | |____pipeline-runner.ts
+| | |____prompts
+| | | |____animation-engineer.prompt.ts
+| | | |____code-orchestrator.prompt.ts
+| | | |____design-analyzer.prompt.ts
+| | | |____quality-validator.prompt.ts
+| | | |____rag-retriever.prompt.ts
+| | | |____three-specialist.prompt.ts
+| | |____quota.ts
+| | |____rag.ts
+| | |____rag-unified.ts
+| |____library
+| | |____master_documents
+| | | |____Colorimetry & Light Shaders.md
+| | | |____Dictionnaire Micro-Métriques SOTY 2026.md
+| | | |____SOTY2026_AGENTIC_UI_STATE.md
+| | | |____SOTY2026_ASYNC_NARRATIVE_ROUTER.md
+| | | |____SOTY2026_BENTHAL_GRID.md
+| | | |____SOTY2026_KINEMATICS_ENGINE.md
+| | | |____SOTY2026_SPATIAL_TYPOGRAPHY.md
+| | | |____SOTY2026_UNIVERSAL_DOM_MORPHING.md
+| | | |____SOTY2026_WEBGL_PIPELINE.md
+| | |____stripe.ts
+| | |____supabase.ts
+| | |____webrtc
+| |____styles
+| |____types
+| | |____agent.ts
+| | |____domain.ts
+| | |____generation.ts
+| | |____user.ts
+|____supabase
+|____supabase_schema.sql
+|____test-pipeline.ts
+|____tsconfig.json
+|____tsconfig.tsbuildinfo
