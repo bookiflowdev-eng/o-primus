@@ -146,7 +146,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <span className="text-[10px] font-mono text-[#666666] truncate cursor-default">{user?.email || 'sys@oprimus.tech'}</span>
               </div>
             </div>
-            <button onClick={() => signOut()} className="p-2 text-[#666666] hover:text-white hover:bg-white/[0.06] rounded-[6px] transition-all focus:outline-none">
+            <button
+              onClick={() => signOut()}
+              className="p-2 text-[#666666] hover:text-white hover:bg-white/[0.06] rounded-[6px] transition-all focus:outline-none"
+              aria-label="Se déconnecter"
+              title="Se déconnecter"
+            >
               <LogOut className="w-3.5 h-3.5" />
             </button>
           </div>
