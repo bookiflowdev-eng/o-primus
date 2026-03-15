@@ -191,6 +191,8 @@ export function GeneratorForm({ onSubmitOverride }: GeneratorFormProps) {
             {/* TOGGLE WEBGL */}
             <button
               type="button"
+              role="switch"
+              aria-checked={formData.includeThreeD}
               disabled={isLoading}
               onClick={() => setFormData({...formData, includeThreeD: !formData.includeThreeD})}
               className={`shrink-0 flex items-center gap-2 px-3 py-2 rounded-[8px] text-[12px] font-medium transition-all duration-300 border outline-none focus-visible:ring-1 focus-visible:ring-white/30 ${
@@ -206,6 +208,8 @@ export function GeneratorForm({ onSubmitOverride }: GeneratorFormProps) {
             {/* TOGGLE GSAP */}
             <button
               type="button"
+              role="switch"
+              aria-checked={formData.animationIntensity === 'intense'}
               disabled={isLoading}
               onClick={() => setFormData({...formData, animationIntensity: formData.animationIntensity === 'intense' ? 'subtle' : 'intense'})}
               className={`shrink-0 flex items-center gap-2 px-3 py-2 rounded-[8px] text-[12px] font-medium transition-all duration-300 border outline-none focus-visible:ring-1 focus-visible:ring-white/30 ${
