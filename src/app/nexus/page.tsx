@@ -172,6 +172,7 @@ export default function NexusWorkspace() {
                 <button
                   onClick={() => setDeviceMode('desktop')}
                   title="Desktop (Plein écran)"
+                  aria-label="Vue Desktop"
                   className={`p-1.5 rounded-md transition-all ${
                     deviceMode === 'desktop'
                       ? 'bg-white/10 text-white'
@@ -184,6 +185,7 @@ export default function NexusWorkspace() {
                 <button
                   onClick={() => setDeviceMode('tablet')}
                   title="Tablette (768px)"
+                  aria-label="Vue Tablette"
                   className={`p-1.5 rounded-md transition-all ${
                     deviceMode === 'tablet'
                       ? 'bg-white/10 text-white'
@@ -196,6 +198,7 @@ export default function NexusWorkspace() {
                 <button
                   onClick={() => setDeviceMode('mobile')}
                   title="Mobile (375px)"
+                  aria-label="Vue Mobile"
                   className={`p-1.5 rounded-md transition-all ${
                     deviceMode === 'mobile'
                       ? 'bg-white/10 text-white'
