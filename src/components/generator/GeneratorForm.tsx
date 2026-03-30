@@ -191,6 +191,8 @@ export function GeneratorForm({ onSubmitOverride }: GeneratorFormProps) {
             {/* TOGGLE WEBGL */}
             <button
               type="button"
+              role="switch"
+              aria-checked={formData.includeThreeD}
               disabled={isLoading}
               onClick={() => setFormData({...formData, includeThreeD: !formData.includeThreeD})}
               className={`shrink-0 flex items-center gap-2 px-3 py-2 rounded-[8px] text-[12px] font-medium transition-all duration-300 border outline-none focus-visible:ring-1 focus-visible:ring-white/30 ${
@@ -199,13 +201,15 @@ export function GeneratorForm({ onSubmitOverride }: GeneratorFormProps) {
                   : 'bg-transparent border-transparent text-[#888888] hover:text-white hover:bg-white/[0.04]'
               }`}
             >
-              <Layers className="w-3.5 h-3.5" /> Moteur WebGL
-              {formData.includeThreeD && <span className="w-1.5 h-1.5 rounded-full bg-white ml-1 shadow-[0_0_8px_rgba(255,255,255,0.5)]" />}
+              <Layers className="w-3.5 h-3.5" aria-hidden="true" /> Moteur WebGL
+              {formData.includeThreeD && <span className="w-1.5 h-1.5 rounded-full bg-white ml-1 shadow-[0_0_8px_rgba(255,255,255,0.5)]" aria-hidden="true" />}
             </button>
 
             {/* TOGGLE GSAP */}
             <button
               type="button"
+              role="switch"
+              aria-checked={formData.animationIntensity === 'intense'}
               disabled={isLoading}
               onClick={() => setFormData({...formData, animationIntensity: formData.animationIntensity === 'intense' ? 'subtle' : 'intense'})}
               className={`shrink-0 flex items-center gap-2 px-3 py-2 rounded-[8px] text-[12px] font-medium transition-all duration-300 border outline-none focus-visible:ring-1 focus-visible:ring-white/30 ${
@@ -214,8 +218,8 @@ export function GeneratorForm({ onSubmitOverride }: GeneratorFormProps) {
                   : 'bg-transparent border-transparent text-[#888888] hover:text-white hover:bg-white/[0.04]'
               }`}
             >
-              <Zap className="w-3.5 h-3.5" /> Cinématique GSAP
-              {formData.animationIntensity === 'intense' && <span className="w-1.5 h-1.5 rounded-full bg-white ml-1 shadow-[0_0_8px_rgba(255,255,255,0.5)]" />}
+              <Zap className="w-3.5 h-3.5" aria-hidden="true" /> Cinématique GSAP
+              {formData.animationIntensity === 'intense' && <span className="w-1.5 h-1.5 rounded-full bg-white ml-1 shadow-[0_0_8px_rgba(255,255,255,0.5)]" aria-hidden="true" />}
             </button>
           </div>
 
