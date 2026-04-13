@@ -1,0 +1,3 @@
+## 2024-04-13 - Icon-only button accessibility in AppShell
+**Learning:** Icon-only interactive elements lacking textual context require both an explicit `aria-label` (for screen readers) and a `title` (for visual tooltips). Additionally, `focus:outline-none` alone breaks keyboard accessibility; an explicit fallback such as `focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:outline-none` must be added. Finally, the SVG icon itself must contain `aria-hidden="true"` to prevent redundant/conflicting screen reader announcements.
+**Action:** Always include `aria-label`, `title`, `focus-visible` styling, and `aria-hidden="true"` on SVGs when implementing or refactoring icon-only interactive elements (`<button>`, `<a>`) throughout the project.
