@@ -1,0 +1,3 @@
+## 2025-04-27 - Icon-only buttons accessibility requirements
+**Learning:** Found an icon-only button without an `aria-label`, making it completely invisible to screen readers, and lacking specific focus visibility.
+**Action:** Added `aria-label`, `title`, explicit `focus-visible` styling (`focus-visible:ring-2 focus-visible:ring-white/30`), and `aria-hidden="true"` on the SVG itself. This ensures proper screen reader support and visible keyboard navigation.
