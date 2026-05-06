@@ -1,24 +1,26 @@
 // CHEMIN: src/components/layout/Footer.tsx
-import Link from 'next/link'
-import { Activity } from 'lucide-react'
+import Link from "next/link";
+import { Activity } from "lucide-react";
 
 const LINKS = [
-  { label: 'Architecture', href: '/#features' },
-  { label: 'Moteur IA', href: '/#pipeline' },
-  { label: 'Licences', href: '/pricing' },
-  { label: 'Workspace', href: '/dashboard' },
-  { label: 'Conditions', href: '/terms' },
-  { label: 'Confidentialité', href: '/privacy' },
-] as const
+  { label: "Architecture", href: "/#features" },
+  { label: "Moteur IA", href: "/#pipeline" },
+  { label: "Licences", href: "/pricing" },
+  { label: "Workspace", href: "/dashboard" },
+  { label: "Conditions", href: "/terms" },
+  { label: "Confidentialité", href: "/privacy" },
+] as const;
 
 export function Footer() {
   return (
-    <footer className="w-full border-t border-white/[0.06] bg-[#030303] z-10 relative mt-auto" role="contentinfo">
+    <footer
+      className="w-full border-t border-white/[0.06] bg-[#030303] z-10 relative mt-auto"
+      role="contentinfo"
+    >
       <div className="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-6">
-        
         {/* Marque & Logo Carbone */}
         <div className="flex items-center gap-4">
-          <div 
+          <div
             className="w-8 h-8 rounded-lg bg-[#121212] border border-white/[0.12] flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.03)]"
             aria-hidden="true"
           >
@@ -36,15 +38,15 @@ export function Footer() {
         </div>
 
         {/* Liens de navigation */}
-        <nav 
+        <nav
           className="flex flex-wrap justify-center items-center gap-x-8 gap-y-4"
           aria-label="Navigation de pied de page"
         >
           {LINKS.map((link) => (
-            <Link 
-              key={link.href} 
-              href={link.href} 
-              className="text-[13px] font-medium text-[#A0A0A0] hover:text-white transition-colors focus:outline-none"
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-[13px] font-medium text-[#A0A0A0] hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-[#030303] rounded-sm"
             >
               {link.label}
             </Link>
@@ -62,5 +64,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

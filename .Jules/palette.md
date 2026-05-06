@@ -1,0 +1,3 @@
+## 2024-05-06 - Accessible Icon Buttons and Focus Visible States
+**Learning:** Found a pattern of icon-only interactive elements lacking `aria-label`/`title` and many links/buttons lacking explicit `focus-visible` styling (they only had `focus:outline-none`). It's important to provide focus visibility especially on elements where default focus rings are removed.
+**Action:** Always provide an `aria-label` and `title` to icon-only buttons. Add fallback `focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black` to elements that have `focus:outline-none` so they remain keyboard accessible.
