@@ -1,0 +1,3 @@
+## 2024-03-20 - Missing Focus Fallbacks & Aria Labels
+**Learning:** Found an accessibility issue pattern specific to this app's components: heavy use of `focus:outline-none` on interactive elements without corresponding `focus-visible` fallbacks for keyboard navigation. Additionally, icon-only buttons like the logout button lack `aria-label` and `title` attributes.
+**Action:** Always verify keyboard accessibility when using `focus:outline-none`. Provide explicit fallbacks such as `focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black`. Ensure icon-only buttons always have `aria-label` and `title` to assist screen reader and pointer-device users.
