@@ -1,0 +1,3 @@
+## 2026-05-08 - Adding Accessible Focus Rings on Dark Theme
+**Learning:** The use of `focus:outline-none` specifically breaks keyboard navigation on dark interfaces unless paired directly with an appropriate `focus-visible:ring-*` alternative. Relying strictly on hover states excludes users navigating by keyboard, and native browser rings may clash visually with dark-themed designs without an offset.
+**Action:** When working on dark-themed components, ensure any use of `focus:outline-none` is accompanied by `focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1` along with the corresponding `focus-visible:ring-offset-[background-color]`.
