@@ -1,0 +1,3 @@
+## 2026-05-11 - Add focus-visible and aria-label to icon-only buttons
+**Learning:** Icon-only interactive elements must explicitly include `aria-label` and `title` attributes to ensure context is provided for both screen readers and pointer-device users. Also, interactive elements that use `focus:outline-none` must provide a `focus-visible` fallback (e.g., `focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black`) for keyboard accessibility.
+**Action:** Always add `aria-label`, `title`, and `focus-visible` fallback classes to icon-only buttons.
