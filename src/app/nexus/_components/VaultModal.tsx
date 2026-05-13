@@ -72,7 +72,7 @@ export function VaultModal({ isOpen, onClose }: VaultModalProps) {
               <p className="text-xs text-white/40 font-mono mt-0.5">HISTORIQUE DES ARCHITECTURES</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2.5 text-white/40 hover:text-white hover:bg-white/10 rounded-xl transition-all">
+          <button aria-label="Fermer" title="Fermer" onClick={onClose} className="p-2.5 text-white/40 hover:text-white hover:bg-white/10 rounded-xl transition-all">
             <X size={20} />
           </button>
         </div>
@@ -114,10 +114,10 @@ export function VaultModal({ isOpen, onClose }: VaultModalProps) {
                           onKeyDown={(e) => handleKeyDown(e, item.id)}
                           className="bg-black border border-blue-500/50 text-white text-base font-medium px-3 py-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500/30 w-full max-w-md transition-all"
                         />
-                        <button onClick={() => handleSaveEdit(item.id)} className="p-1.5 bg-blue-500/20 text-blue-400 hover:bg-blue-500/40 rounded-md transition-colors">
+                        <button aria-label="Sauvegarder le nom" title="Sauvegarder le nom" onClick={() => handleSaveEdit(item.id)} className="p-1.5 bg-blue-500/20 text-blue-400 hover:bg-blue-500/40 rounded-md transition-colors">
                           <Check size={16} />
                         </button>
-                        <button onClick={() => setEditingId(null)} className="p-1.5 bg-white/10 text-white/60 hover:text-white hover:bg-white/20 rounded-md transition-colors">
+                        <button aria-label="Annuler le renommage" title="Annuler le renommage" onClick={() => setEditingId(null)} className="p-1.5 bg-white/10 text-white/60 hover:text-white hover:bg-white/20 rounded-md transition-colors">
                           <X size={16} />
                         </button>
                       </div>
@@ -125,6 +125,7 @@ export function VaultModal({ isOpen, onClose }: VaultModalProps) {
                       <div className="flex items-center gap-3 mb-1">
                         <h3 className="text-white font-medium text-base truncate">{item.title || 'Architecture sans nom'}</h3>
                         <button 
+                          aria-label="Renommer"
                           onClick={() => { setEditingId(item.id); setEditValue(item.title || ''); }}
                           className="opacity-0 group-hover:opacity-100 p-1.5 text-white/40 hover:text-white hover:bg-white/10 rounded-md transition-all"
                           title="Renommer"
@@ -161,6 +162,7 @@ export function VaultModal({ isOpen, onClose }: VaultModalProps) {
                       Restaurer
                     </button>
                     <button 
+                      aria-label="Détruire"
                       onClick={() => deleteItem(item.id)}
                       className="p-2.5 text-white/30 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
                       title="Détruire"

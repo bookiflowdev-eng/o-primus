@@ -1,0 +1,3 @@
+## 2025-02-12 - Missing ARIA Labels on Icon Buttons
+**Learning:** Found multiple instances where icon-only buttons lack `aria-label` or `title` attributes. This breaks accessibility for screen reader users and can be confusing for sighted users as well. Some buttons have `title` but no `aria-label`, others lack both. It's a common pattern in the OmniBar component (`src/app/nexus/_components/OmniBar/index.tsx`) and `VaultModal`.
+**Action:** Adding missing `aria-label` or `title` attributes to icon-only buttons. I'll add `title` (which acts as a tooltip for mouse users and is read by some screen readers) AND `aria-label` (explicitly for screen readers). I will focus on `OmniBar` for this specific micro-UX improvement, as it's a central widget.
