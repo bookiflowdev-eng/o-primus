@@ -1,0 +1,3 @@
+## 2025-02-12 - Focus visibility on dark interfaces
+**Learning:** This application heavily utilizes `focus:outline-none` on interactive elements, often leading to invisible keyboard navigation on dark or black backgrounds. Relying solely on hover states isolates keyboard users.
+**Action:** When working on dark theme interfaces that suppress default outlines, always implement explicit fallback focus states using `focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black` to ensure keyboard accessibility without compromising mouse/touch aesthetics.
