@@ -1,0 +1,3 @@
+## 2026-05-18 - Accessible LogOut Icon Button
+**Learning:** Icon-only buttons using Lucide icons in layout shells (like AppShell.tsx) frequently lack 'aria-label' and fallback 'title' attributes, breaking screen reader context and hovering context. Additionally, when buttons strip default focus rings (e.g., 'focus:outline-none') in dark mode interfaces ('bg-[#030303]'), explicit 'focus-visible:ring-offset-*' rules mapped to their parent's background color are critical to maintain keyboard navigation visibility.
+**Action:** Whenever identifying an icon-only button inside layout shells or nested bento boxes, always add both an 'aria-label' and a 'title', and reinstate explicit 'focus-visible' keyboard focus rings with an offset color matching the immediate container.
