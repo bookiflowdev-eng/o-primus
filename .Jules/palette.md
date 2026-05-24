@@ -1,0 +1,3 @@
+## 2024-05-18 - Accessible Logout Button with Dark Backgrounds
+**Learning:** `focus:outline-none` removes default accessibility focus rings, and when adding `focus-visible` to replace it on dark backgrounds, standard rings might be invisible. The combination `focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black` is effective. Additionally, `aria-label` and `title` properties on icon-only buttons need to match the app's French localization (e.g., "Se déconnecter").
+**Action:** Always provide a high-contrast `focus-visible` fallback tailored for dark backgrounds when stripping default outlines, and ensure accessibility strings follow localized language conventions.
