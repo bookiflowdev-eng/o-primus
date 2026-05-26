@@ -230,9 +230,9 @@ export default function OmniBar() {
               {sotyProbeData && <span className="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full shadow-[0_0_5px_rgba(59,130,246,1)]" />}
             </button>
           </div>
-          <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors"><FolderArchive size={16} /></button>
-          <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors"><LayoutTemplate size={16} /></button>
-          <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors"><Settings2 size={16} /></button>
+          <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors" title="Archives" aria-label="Archives"><FolderArchive size={16} /></button>
+          <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors" title="Gabarits" aria-label="Gabarits"><LayoutTemplate size={16} /></button>
+          <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors" title="Paramètres" aria-label="Paramètres"><Settings2 size={16} /></button>
         </div>
 
         <div className="flex items-center gap-2">
