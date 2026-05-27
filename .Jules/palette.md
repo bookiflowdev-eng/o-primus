@@ -1,0 +1,3 @@
+## 2025-02-21 - Keyboard Accessibility Fallbacks
+**Learning:** The codebase frequently removes default focus outlines (e.g. `focus:outline-none`) on interactive elements like links and buttons in core layout components without providing explicit `focus-visible` fallbacks, making keyboard navigation nearly invisible against dark UI themes.
+**Action:** Systematically ensure that anytime `focus:outline-none` is used, a corresponding `focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black` is added to guarantee visible focus states for keyboard users while preserving aesthetic intent for pointer users.
