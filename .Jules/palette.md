@@ -1,0 +1,3 @@
+## 2025-05-28 - Missing Context on Icon-Only Tools in Complex Widgets
+**Learning:** In highly technical UI spaces like the "Nexus Command Center" (OmniBar), floating floating widget components often use icon-only controls (e.g., FolderArchive, LayoutTemplate, Settings) to save space. Without `aria-label` and `title`, these controls become completely opaque to screen-reader users, and even visual users may struggle to decipher the iconography without tooltip hints.
+**Action:** When auditing custom or draggable floating palettes/toolbars, ensure all interactive icon-only elements have proper localized `aria-label`s, `title` attributes (for mouse users), and explicitly visible focus outlines for keyboard navigation.
