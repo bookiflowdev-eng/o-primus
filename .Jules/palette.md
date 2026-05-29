@@ -1,0 +1,3 @@
+## 2024-05-29 - Accessible Icon-Only Buttons in Dark Mode
+**Learning:** Icon-only interactive elements (like the LogOut button in AppShell) are inaccessible without explicit text labels, and using `focus:outline-none` breaks keyboard navigation in dark mode without a high-contrast fallback. A combination of `aria-label` (for screen readers), `title` (for tooltips on hover), and robust `focus-visible` ring styling is essential for inclusive design.
+**Action:** Always verify that icon-only buttons include `aria-label` and `title` (localized appropriately, e.g., "Se déconnecter") and provide a clear keyboard focus state like `focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black`.
