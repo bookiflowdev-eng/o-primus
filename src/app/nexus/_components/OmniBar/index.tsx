@@ -159,7 +159,7 @@ export default function OmniBar() {
         className="fixed top-0 left-0 flex items-center gap-3 bg-gradient-to-b from-[#18181B] to-black border border-white/20 rounded-xl p-2 shadow-2xl cursor-grab pointer-events-auto" 
         onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
       >
-        <button onClick={(e) => { e.stopPropagation(); setIsMinimized(false); }} className="w-8 h-8 rounded-md bg-white/5 border border-white/10 text-neutral-400 flex items-center justify-center hover:text-white transition-colors">
+        <button onClick={(e) => { e.stopPropagation(); setIsMinimized(false); }} aria-label="Agrandir" title="Agrandir" className="w-8 h-8 rounded-md bg-white/5 border border-white/10 text-neutral-400 flex items-center justify-center hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black">
           <Maximize2 size={14} />
         </button>
         <span className="text-[10px] font-mono text-neutral-400 pr-4 uppercase tracking-widest">Nexus Command</span>
@@ -183,7 +183,7 @@ export default function OmniBar() {
           <GripHorizontal size={14} className="text-white/60 pointer-events-none" />
           <span className="text-[10px] font-mono text-white/50 uppercase tracking-widest pointer-events-none">Nexus Command Center</span>
         </div>
-        <button onClick={(e) => { e.stopPropagation(); setIsMinimized(true); }} className="text-white/50 hover:text-white transition-colors p-1">
+        <button onClick={(e) => { e.stopPropagation(); setIsMinimized(true); }} aria-label="Réduire" title="Réduire" className="text-white/50 hover:text-white transition-colors p-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black rounded-sm">
           <Minimize2 size={14} />
         </button>
       </div>
