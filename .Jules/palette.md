@@ -1,0 +1,3 @@
+## 2024-05-24 - Interactive Component Focus Visibility
+**Learning:** Found multiple instances where `focus:outline-none` was applied to interactive elements (AppShell links, LogOut button, generic Button component) without a corresponding `focus-visible` fallback, making keyboard navigation virtually invisible against dark backgrounds.
+**Action:** Added `focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1` (and `focus-visible:ring-offset-black` for generic buttons, or specific hex colors for layout components) to restore proper focus rings for keyboard users while keeping the outline hidden for mouse users. Always ensure `focus:outline-none` is paired with `focus-visible:ring-*`.
