@@ -134,7 +134,8 @@ export default function NexusWorkspace() {
             <div className="flex bg-neutral-900/40 rounded-lg p-1 border border-white/5">
               <button
                 onClick={() => setViewMode('preview')}
-                className={`flex items-center gap-2 px-4 py-1.5 rounded-md text-[11px] font-bold tracking-wider transition-all ${
+                aria-label="Mode rendu"
+                className={`flex items-center gap-2 px-4 py-1.5 rounded-md text-[11px] font-bold tracking-wider transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black ${
                   viewMode === 'preview'
                     ? 'bg-blue-600 text-white'
                     : 'text-neutral-500 hover:text-white'
@@ -145,7 +146,8 @@ export default function NexusWorkspace() {
 
               <button
                 onClick={() => setViewMode('code')}
-                className={`flex items-center gap-2 px-4 py-1.5 rounded-md text-[11px] font-bold tracking-wider transition-all ${
+                aria-label="Mode code source"
+                className={`flex items-center gap-2 px-4 py-1.5 rounded-md text-[11px] font-bold tracking-wider transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black ${
                   viewMode === 'code'
                     ? 'bg-white/10 text-white'
                     : 'text-neutral-500 hover:text-white'
@@ -156,7 +158,8 @@ export default function NexusWorkspace() {
 
               <button
                 onClick={() => setViewMode('benchmark')}
-                className={`flex items-center gap-2 px-4 py-1.5 rounded-md text-[11px] font-bold tracking-wider transition-all ${
+                aria-label="Mode benchmark"
+                className={`flex items-center gap-2 px-4 py-1.5 rounded-md text-[11px] font-bold tracking-wider transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black ${
                   viewMode === 'benchmark'
                     ? 'bg-white/10 text-white'
                     : 'text-neutral-500 hover:text-white'
@@ -172,7 +175,8 @@ export default function NexusWorkspace() {
                 <button
                   onClick={() => setDeviceMode('desktop')}
                   title="Desktop (Plein écran)"
-                  className={`p-1.5 rounded-md transition-all ${
+                  aria-label="Vue Desktop (Plein écran)"
+                  className={`p-1.5 rounded-md transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black ${
                     deviceMode === 'desktop'
                       ? 'bg-white/10 text-white'
                       : 'text-neutral-500 hover:text-white'
@@ -184,7 +188,8 @@ export default function NexusWorkspace() {
                 <button
                   onClick={() => setDeviceMode('tablet')}
                   title="Tablette (768px)"
-                  className={`p-1.5 rounded-md transition-all ${
+                  aria-label="Vue Tablette (768px)"
+                  className={`p-1.5 rounded-md transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black ${
                     deviceMode === 'tablet'
                       ? 'bg-white/10 text-white'
                       : 'text-neutral-500 hover:text-white'
@@ -196,7 +201,8 @@ export default function NexusWorkspace() {
                 <button
                   onClick={() => setDeviceMode('mobile')}
                   title="Mobile (375px)"
-                  className={`p-1.5 rounded-md transition-all ${
+                  aria-label="Vue Mobile (375px)"
+                  className={`p-1.5 rounded-md transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black ${
                     deviceMode === 'mobile'
                       ? 'bg-white/10 text-white'
                       : 'text-neutral-500 hover:text-white'
