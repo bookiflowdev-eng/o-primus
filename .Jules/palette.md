@@ -1,0 +1,3 @@
+## 2025-02-12 - Accessible Icon-Only Buttons
+**Learning:** In the O-Primus UI, icon-only buttons (like LogOut in AppShell) often use `focus:outline-none` for aesthetic reasons but frequently lack explicit fallbacks and accessibility tags in localized interfaces (e.g. French).
+**Action:** When auditing icon-only components, consistently implement localized `aria-label` and `title` attributes (e.g., "Se déconnecter"), and reintroduce keyboard accessibility with specific focus-visible styles like `focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black`.
