@@ -1,0 +1,3 @@
+## 2024-10-25 - OmniBar Accessibility
+**Learning:** Icon-only buttons within complex floating widget elements (like the OmniBar and its inputs) are frequently overlooked for proper screen-reader announcements (`aria-label`) and keyboard navigation support (`focus-visible`). Given the app's dark mode, omitting a visible focus indicator makes keyboard use impossible.
+**Action:** When creating or modifying compact UI widget bars with multiple icon buttons, strictly ensure every `<button>` has a descriptive `aria-label`, a matching `title` tooltip, and a `focus-visible:ring-2` (often with `focus-visible:ring-white/30` or an accent color) paired with `focus:outline-none`.
