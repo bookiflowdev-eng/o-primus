@@ -159,7 +159,7 @@ export default function OmniBar() {
         className="fixed top-0 left-0 flex items-center gap-3 bg-gradient-to-b from-[#18181B] to-black border border-white/20 rounded-xl p-2 shadow-2xl cursor-grab pointer-events-auto" 
         onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
       >
-        <button onClick={(e) => { e.stopPropagation(); setIsMinimized(false); }} className="w-8 h-8 rounded-md bg-white/5 border border-white/10 text-neutral-400 flex items-center justify-center hover:text-white transition-colors">
+        <button onClick={(e) => { e.stopPropagation(); setIsMinimized(false); }} className="w-8 h-8 rounded-md bg-white/5 border border-white/10 text-neutral-400 flex items-center justify-center hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30" aria-label="Agrandir" title="Agrandir">
           <Maximize2 size={14} />
         </button>
         <span className="text-[10px] font-mono text-neutral-400 pr-4 uppercase tracking-widest">Nexus Command</span>
@@ -183,7 +183,7 @@ export default function OmniBar() {
           <GripHorizontal size={14} className="text-white/60 pointer-events-none" />
           <span className="text-[10px] font-mono text-white/50 uppercase tracking-widest pointer-events-none">Nexus Command Center</span>
         </div>
-        <button onClick={(e) => { e.stopPropagation(); setIsMinimized(true); }} className="text-white/50 hover:text-white transition-colors p-1">
+        <button onClick={(e) => { e.stopPropagation(); setIsMinimized(true); }} className="text-white/50 hover:text-white transition-colors p-1 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30" aria-label="Réduire" title="Réduire">
           <Minimize2 size={14} />
         </button>
       </div>
@@ -196,7 +196,7 @@ export default function OmniBar() {
             {attachments.map(att => (
               <div key={att.id} className="relative group w-14 h-14 rounded-lg overflow-hidden border border-white/20 shadow-sm">
                 {att.type === 'image' ? <img src={att.preview} className="w-full h-full object-cover" alt="" /> : <div className="w-full h-full flex items-center justify-center bg-[#111] text-neutral-300"><FileCode size={18} /></div>}
-                <button onClick={() => setAttachments(prev => prev.filter(a => a.id !== att.id))} className="absolute top-1 right-1 bg-neutral-900 text-white border border-white/20 rounded-md p-1 opacity-0 group-hover:opacity-100 transition-all"><X size={10} /></button>
+                <button onClick={() => setAttachments(prev => prev.filter(a => a.id !== att.id))} className="absolute top-1 right-1 bg-neutral-900 text-white border border-white/20 rounded-md p-1 opacity-0 group-hover:opacity-100 transition-all focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30" aria-label="Supprimer la pièce jointe" title="Supprimer la pièce jointe"><X size={10} /></button>
               </div>
             ))}
           </div>
@@ -224,15 +224,15 @@ export default function OmniBar() {
             {showSotyProbe && <SotyProbePopover onClose={() => setShowSotyProbe(false)} />}
             <button 
               onClick={() => setShowSotyProbe(!showSotyProbe)}
-              className={`p-2 rounded-md transition-all relative ${sotyProbeData ? 'text-blue-400 bg-blue-500/10 border border-blue-500/30 shadow-[0_0_10px_rgba(59,130,246,0.3)]' : 'text-white/60 hover:text-white hover:bg-white/10 border border-transparent'}`} 
+              className={`p-2 rounded-md transition-all relative focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 ${sotyProbeData ? 'text-blue-400 bg-blue-500/10 border border-blue-500/30 shadow-[0_0_10px_rgba(59,130,246,0.3)]' : 'text-white/60 hover:text-white hover:bg-white/10 border border-transparent'}`} aria-label="Sonde Soty" title="Sonde Soty"
             >
               <Globe size={16} />
               {sotyProbeData && <span className="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full shadow-[0_0_5px_rgba(59,130,246,1)]" />}
             </button>
           </div>
-          <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors"><FolderArchive size={16} /></button>
-          <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors"><LayoutTemplate size={16} /></button>
-          <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors"><Settings2 size={16} /></button>
+          <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30" aria-label="Archives" title="Archives"><FolderArchive size={16} /></button>
+          <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30" aria-label="Modèles" title="Modèles"><LayoutTemplate size={16} /></button>
+          <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30" aria-label="Paramètres" title="Paramètres"><Settings2 size={16} /></button>
         </div>
 
         <div className="flex items-center gap-2">
@@ -246,7 +246,7 @@ export default function OmniBar() {
           <button 
             onClick={handleSubmit}
             disabled={isGenerating || (!input.trim() && attachments.length === 0)} 
-            className="flex items-center justify-center h-8 w-10 rounded-md bg-white text-black hover:bg-neutral-200 disabled:opacity-20 disabled:bg-white/10 transition-all shadow-md"
+            className="flex items-center justify-center h-8 w-10 rounded-md bg-white text-black hover:bg-neutral-200 disabled:opacity-20 disabled:bg-white/10 transition-all shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50" aria-label="Soumettre" title="Soumettre"
           >
             {isGenerating ? <Loader2 size={16} className="animate-spin text-neutral-500" /> : <ArrowUp size={18} strokeWidth={3} />}
           </button>

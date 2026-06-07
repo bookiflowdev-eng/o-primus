@@ -50,7 +50,7 @@ export default function BrowserInput() {
           <button 
             type="button"
             onClick={clearSelection}
-            className="text-blue-400/50 hover:text-blue-400 transition-colors"
+            className="text-blue-400/50 hover:text-blue-400 transition-colors rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50" aria-label="Relâcher la cible"
             title="Relâcher la cible"
           >
             <X size={14} />
@@ -80,7 +80,8 @@ export default function BrowserInput() {
             if (isSelectionMode) clearSelection(); // Relâche la cible si on désactive le mode
           }}
           title={isSelectionMode ? "Désactiver le mode ciblage" : "Activer le mode ciblage chirurgical"}
-          className={`p-1.5 rounded-md transition-colors ${
+          aria-label={isSelectionMode ? "Désactiver le mode ciblage" : "Activer le mode ciblage chirurgical"}
+          className={`p-1.5 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 ${
             isSelectionMode 
               ? 'text-blue-400 bg-blue-500/20 border border-blue-500/30 shadow-[0_0_10px_rgba(59,130,246,0.3)]' 
               : 'text-white/50 hover:text-white hover:bg-white/10 border border-transparent'
@@ -91,16 +92,16 @@ export default function BrowserInput() {
 
         <div className="w-px h-4 bg-white/10 mx-1" /> {/* Séparateur visuel */}
 
-        <button type="button" onClick={() => setIsVaultOpen(true)} title="Ouvrir le Vault" className="text-white/50 hover:text-blue-400 transition-colors">
+        <button type="button" onClick={() => setIsVaultOpen(true)} title="Ouvrir le Vault" className="text-white/50 hover:text-blue-400 transition-colors rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30" aria-label="Ouvrir le Vault">
           <FolderOpen size={16} />
         </button>
 
-        <button type="button" onClick={saveToVault} disabled={isWorking || isSaving} title="Sauvegarder ce design" className="text-white/50 hover:text-green-400 disabled:opacity-30 transition-colors">
+        <button type="button" onClick={saveToVault} disabled={isWorking || isSaving} title="Sauvegarder ce design" className="text-white/50 hover:text-green-400 disabled:opacity-30 transition-colors rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30" aria-label="Sauvegarder ce design">
           {isSaving ? <Loader2 size={16} className="animate-spin text-green-400" /> : <Save size={16} />}
         </button>
 
         {url.trim() && (
-          <button type="submit" disabled={isWorking} className={`transition-colors disabled:opacity-30 ml-1 ${selectedNode ? 'text-blue-400 hover:text-blue-300' : 'text-white/50 hover:text-white'}`}>
+          <button type="submit" disabled={isWorking} className={`transition-colors disabled:opacity-30 ml-1 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 ${selectedNode ? 'text-blue-400 hover:text-blue-300' : 'text-white/50 hover:text-white'}`} aria-label="Soumettre l'URL" title="Soumettre l'URL">
             <ArrowRight size={16} />
           </button>
         )}
