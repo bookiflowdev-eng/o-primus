@@ -1,0 +1,4 @@
+
+## 2026-06-09 - Focus Management and Labeling on Dark Themes
+**Learning:** The pattern of using `focus:outline-none` to remove default browser rings is common but often leaves interactive elements (like icon-only LogOut buttons) without accessible fallbacks, particularly on dark backgrounds where default rings might have low contrast anyway. Additionally, icon-only buttons frequently lack localized ARIA labels and tooltips, hindering both screen reader and pointer-device users.
+**Action:** When encountering `focus:outline-none`, strictly verify the presence of a corresponding `focus-visible` fallback (e.g., `focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black`). Ensure icon-only interactive elements explicitly include localized `aria-label` and `title` attributes.
