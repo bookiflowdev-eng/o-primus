@@ -1,0 +1,3 @@
+## 2024-06-10 - Accessibility for Icon-only Buttons
+**Learning:** Icon-only buttons with `focus:outline-none` can be visually completely hidden during keyboard navigation, and lacking ARIA labels makes them inaccessible to screen readers.
+**Action:** Always ensure icon-only interactive elements include localized `aria-label` and `title` attributes. When stripping outline focus (e.g., `focus:outline-none`), strictly apply a `focus-visible` fallback (like `focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black`) to maintain keyboard accessibility, especially against dark backgrounds.
