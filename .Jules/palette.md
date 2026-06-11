@@ -1,0 +1,3 @@
+## 2024-06-11 - Accessible icon-only buttons with focus states
+**Learning:** Icon-only buttons (like the LogOut button in AppShell) can lack context for screen reader users and pointer-device users. In dark-themed applications, `focus:outline-none` removes keyboard accessibility visibility.
+**Action:** Always provide `aria-label` and `title` attributes on icon-only elements. Additionally, include a clear `focus-visible` fallback (e.g., `focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black`) to ensure visibility against dark backgrounds during keyboard navigation.
