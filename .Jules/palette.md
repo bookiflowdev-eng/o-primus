@@ -1,0 +1,3 @@
+## 2024-05-24 - Icon-Only Button Accessibility Pattern
+**Learning:** Icon-only interactive elements require both `aria-label` and `title` attributes (localized in French) to ensure context for both screen readers and pointer-device users. Additionally, using `focus:outline-none` on dark backgrounds necessitates a `focus-visible` fallback (e.g., `focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black`) to maintain keyboard accessibility.
+**Action:** When adding or reviewing icon-only buttons, always explicitly include the `aria-label`, `title`, and `focus-visible` classes to support diverse user needs and interactions.
