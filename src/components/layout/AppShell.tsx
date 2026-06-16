@@ -62,7 +62,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         className="shrink-0 flex flex-col bg-[#050505] border-r border-white/[0.06] relative z-20"
       >
         <div className="h-16 px-6 flex items-center justify-between shrink-0 border-b border-white/[0.03]">
-          <Link href="/dashboard" className="flex items-center gap-3 focus:outline-none group outline-none">
+          <Link href="/dashboard" className="flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black rounded-md group outline-none">
             <div className="w-7 h-7 rounded-[6px] bg-white text-black flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.1)] group-hover:scale-105 transition-transform">
               <span className="font-bold text-[12px]">O</span>
             </div>
@@ -146,7 +146,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <span className="text-[10px] font-mono text-[#666666] truncate cursor-default">{user?.email || 'sys@oprimus.tech'}</span>
               </div>
             </div>
-            <button onClick={() => signOut()} className="p-2 text-[#666666] hover:text-white hover:bg-white/[0.06] rounded-[6px] transition-all focus:outline-none">
+            <button
+              onClick={() => signOut()}
+              aria-label="Se déconnecter"
+              title="Se déconnecter"
+              className="p-2 text-[#666666] hover:text-white hover:bg-white/[0.06] rounded-[6px] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black"
+            >
               <LogOut className="w-3.5 h-3.5" />
             </button>
           </div>
