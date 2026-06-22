@@ -43,7 +43,7 @@ export function Navbar() {
           {/* LOGO : O-Primus Signature Titane */}
           <Link 
             href="/" 
-            className="flex items-center gap-3 group cursor-pointer focus:outline-none rounded-lg outline-none" 
+            className="flex items-center gap-3 group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black rounded-lg outline-none"
             aria-label="Accueil O-Primus"
           >
             <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
@@ -56,13 +56,13 @@ export function Navbar() {
 
           {/* NAVIGATION DESKTOP */}
           <nav className="hidden md:flex items-center gap-8" aria-label="Navigation principale">
-            <Link href="/#features" className="text-[13px] font-medium text-[#A0A0A0] hover:text-white transition-colors focus:outline-none">
+            <Link href="/#features" className="text-[13px] font-medium text-[#A0A0A0] hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black rounded">
               Architecture
             </Link>
-            <Link href="/#pipeline" className="text-[13px] font-medium text-[#A0A0A0] hover:text-white transition-colors focus:outline-none flex items-center gap-2">
+            <Link href="/#pipeline" className="text-[13px] font-medium text-[#A0A0A0] hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black rounded flex items-center gap-2">
               Moteur IA <Badge status="neutral">v3.1</Badge>
             </Link>
-            <Link href="/pricing" className="text-[13px] font-medium text-[#A0A0A0] hover:text-white transition-colors focus:outline-none">
+            <Link href="/pricing" className="text-[13px] font-medium text-[#A0A0A0] hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black rounded">
               Licences
             </Link>
           </nav>
@@ -91,7 +91,7 @@ export function Navbar() {
                   onClick={() => signOut()} 
                   aria-label="Se déconnecter" 
                   title="Se déconnecter"
-                  className="w-8 h-8 rounded-full overflow-hidden border border-white/[0.15] hover:border-white/[0.4] transition-all duration-300 cursor-pointer shrink-0 focus:outline-none hover:scale-105 will-change-transform"
+                  className="w-8 h-8 rounded-full overflow-hidden border border-white/[0.15] hover:border-white/[0.4] transition-all duration-300 cursor-pointer shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black hover:scale-105 will-change-transform"
                 >
                   {user?.image ? (
                     /* eslint-disable-next-line @next/next/no-img-element */
@@ -107,7 +107,7 @@ export function Navbar() {
               <div className="flex items-center gap-4">
                 <button 
                   onClick={() => signIn('google')} 
-                  className="hidden sm:block text-[13px] font-medium text-[#A0A0A0] hover:text-white transition-colors focus:outline-none"
+                  className="hidden sm:block text-[13px] font-medium text-[#A0A0A0] hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black rounded"
                 >
                   S'identifier
                 </button>
