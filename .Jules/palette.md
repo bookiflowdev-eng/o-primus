@@ -1,0 +1,3 @@
+## 2025-06-25 - Icon-only Button Accessibility
+**Learning:** Icon-only buttons often lack essential context for screen readers and keyboard users when only styled with `focus:outline-none`. In this app's dark theme, they require both an explicit `aria-label`/`title` and proper `focus-visible` utility classes (e.g., `focus-visible:ring-white/30`) to remain visible during keyboard navigation.
+**Action:** When implementing or auditing interactive icon-only elements, especially those with `focus:outline-none`, ensure they have `aria-label`, `title` for hover tooltips, and appropriate `focus-visible:ring-*` classes that contrast well against the background.
