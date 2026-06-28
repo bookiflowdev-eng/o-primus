@@ -1,0 +1,3 @@
+## 2024-05-18 - Icon-Only Button Accessibility in Dark Themes
+**Learning:** Icon-only buttons (like LogOut) often rely exclusively on visual cues, making them inaccessible to screen readers without an `aria-label` and `title`. In dark-themed interfaces, applying standard `focus:outline-none` creates a keyboard accessibility trap unless paired with highly contrasted `focus-visible` styles (e.g., `focus-visible:ring-2 focus-visible:ring-white/30`).
+**Action:** When creating icon-only action elements, always ensure dual sensory support by adding localized `aria-label` and `title` attributes. Provide explicit fallback focus states using Tailwind's `focus-visible:ring-*` utilities adjusted for dark mode contrast.
