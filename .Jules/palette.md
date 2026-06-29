@@ -1,0 +1,3 @@
+## 2024-05-18 - Missing focus-visible states on components with focus:outline-none
+**Learning:** Using `focus:outline-none` without providing a custom fallback state (like `focus-visible:ring-2`) creates a critical accessibility issue, making it impossible for keyboard users to track their focus state across interactive elements like Buttons.
+**Action:** Always pair `focus:outline-none` with explicit `focus-visible` styles (e.g., `focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black`) to ensure focus is always visually apparent for keyboard users, while preventing outline clicks on mouse interactions.
