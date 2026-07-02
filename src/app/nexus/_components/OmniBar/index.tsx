@@ -159,8 +159,8 @@ export default function OmniBar() {
         className="fixed top-0 left-0 flex items-center gap-3 bg-gradient-to-b from-[#18181B] to-black border border-white/20 rounded-xl p-2 shadow-2xl cursor-grab pointer-events-auto" 
         onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
       >
-        <button onClick={(e) => { e.stopPropagation(); setIsMinimized(false); }} className="w-8 h-8 rounded-md bg-white/5 border border-white/10 text-neutral-400 flex items-center justify-center hover:text-white transition-colors">
-          <Maximize2 size={14} />
+        <button aria-label="Agrandir" title="Agrandir" onClick={(e) => { e.stopPropagation(); setIsMinimized(false); }} className="w-8 h-8 rounded-md bg-white/5 border border-white/10 text-neutral-400 flex items-center justify-center hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black">
+          <Maximize2 size={14} aria-hidden="true" />
         </button>
         <span className="text-[10px] font-mono text-neutral-400 pr-4 uppercase tracking-widest">Nexus Command</span>
       </div>
@@ -183,8 +183,8 @@ export default function OmniBar() {
           <GripHorizontal size={14} className="text-white/60 pointer-events-none" />
           <span className="text-[10px] font-mono text-white/50 uppercase tracking-widest pointer-events-none">Nexus Command Center</span>
         </div>
-        <button onClick={(e) => { e.stopPropagation(); setIsMinimized(true); }} className="text-white/50 hover:text-white transition-colors p-1">
-          <Minimize2 size={14} />
+        <button aria-label="Réduire" title="Réduire" onClick={(e) => { e.stopPropagation(); setIsMinimized(true); }} className="text-white/50 hover:text-white transition-colors p-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black rounded">
+          <Minimize2 size={14} aria-hidden="true" />
         </button>
       </div>
 
@@ -196,7 +196,7 @@ export default function OmniBar() {
             {attachments.map(att => (
               <div key={att.id} className="relative group w-14 h-14 rounded-lg overflow-hidden border border-white/20 shadow-sm">
                 {att.type === 'image' ? <img src={att.preview} className="w-full h-full object-cover" alt="" /> : <div className="w-full h-full flex items-center justify-center bg-[#111] text-neutral-300"><FileCode size={18} /></div>}
-                <button onClick={() => setAttachments(prev => prev.filter(a => a.id !== att.id))} className="absolute top-1 right-1 bg-neutral-900 text-white border border-white/20 rounded-md p-1 opacity-0 group-hover:opacity-100 transition-all"><X size={10} /></button>
+                <button aria-label="Supprimer la pièce jointe" title="Supprimer la pièce jointe" onClick={() => setAttachments(prev => prev.filter(a => a.id !== att.id))} className="absolute top-1 right-1 bg-neutral-900 text-white border border-white/20 rounded-md p-1 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black"><X size={10} aria-hidden="true" /></button>
               </div>
             ))}
           </div>
@@ -216,23 +216,24 @@ export default function OmniBar() {
 
       <div className="flex items-center justify-between px-3 pb-3 pt-2 border-t border-white/15 bg-black">
         <div className="flex items-center gap-1">
-          <button onClick={() => fileInputRef.current?.click()} className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors flex items-center gap-2 text-xs font-medium">
-            <Paperclip size={16} /> <span className="hidden sm:inline">Joindre</span>
+          <button aria-label="Joindre un fichier" onClick={() => fileInputRef.current?.click()} className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors flex items-center gap-2 text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black">
+            <Paperclip size={16} aria-hidden="true" /> <span className="hidden sm:inline" aria-hidden="true">Joindre</span>
           </button>
           <div className="w-px h-4 bg-white/20 mx-1" />
           <div className="relative">
             {showSotyProbe && <SotyProbePopover onClose={() => setShowSotyProbe(false)} />}
             <button 
+              aria-label="Ouvrir la sonde Soty" title="Ouvrir la sonde Soty"
               onClick={() => setShowSotyProbe(!showSotyProbe)}
-              className={`p-2 rounded-md transition-all relative ${sotyProbeData ? 'text-blue-400 bg-blue-500/10 border border-blue-500/30 shadow-[0_0_10px_rgba(59,130,246,0.3)]' : 'text-white/60 hover:text-white hover:bg-white/10 border border-transparent'}`} 
+              className={`p-2 rounded-md transition-all relative focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black ${sotyProbeData ? 'text-blue-400 bg-blue-500/10 border border-blue-500/30 shadow-[0_0_10px_rgba(59,130,246,0.3)]' : 'text-white/60 hover:text-white hover:bg-white/10 border border-transparent'}`}
             >
-              <Globe size={16} />
+              <Globe size={16} aria-hidden="true" />
               {sotyProbeData && <span className="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full shadow-[0_0_5px_rgba(59,130,246,1)]" />}
             </button>
           </div>
-          <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors"><FolderArchive size={16} /></button>
-          <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors"><LayoutTemplate size={16} /></button>
-          <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors"><Settings2 size={16} /></button>
+          <button aria-label="Archives" title="Archives" className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black"><FolderArchive size={16} aria-hidden="true" /></button>
+          <button aria-label="Modèles" title="Modèles" className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black"><LayoutTemplate size={16} aria-hidden="true" /></button>
+          <button aria-label="Paramètres" title="Paramètres" className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black"><Settings2 size={16} aria-hidden="true" /></button>
         </div>
 
         <div className="flex items-center gap-2">
@@ -244,11 +245,12 @@ export default function OmniBar() {
             {isAgentic ? 'RÉFLEXION LENTE' : 'DRAFT'}
           </button>
           <button 
+            aria-label="Envoyer la directive" title="Envoyer la directive"
             onClick={handleSubmit}
             disabled={isGenerating || (!input.trim() && attachments.length === 0)} 
-            className="flex items-center justify-center h-8 w-10 rounded-md bg-white text-black hover:bg-neutral-200 disabled:opacity-20 disabled:bg-white/10 transition-all shadow-md"
+            className="flex items-center justify-center h-8 w-10 rounded-md bg-white text-black hover:bg-neutral-200 disabled:opacity-20 disabled:bg-white/10 transition-all shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-1 focus-visible:ring-offset-black"
           >
-            {isGenerating ? <Loader2 size={16} className="animate-spin text-neutral-500" /> : <ArrowUp size={18} strokeWidth={3} />}
+            {isGenerating ? <Loader2 size={16} className="animate-spin text-neutral-500" aria-hidden="true" /> : <ArrowUp size={18} strokeWidth={3} aria-hidden="true" />}
           </button>
         </div>
       </div>
