@@ -1,0 +1,3 @@
+## 2026-07-02 - Accessible Hidden-on-Hover Interactions
+**Learning:** When using visual hidden-on-hover patterns (like `opacity-0 group-hover:opacity-100`) for interactive elements, screen reader users might not discover them easily, and keyboard users cannot focus them if they are completely hidden. Additionally, all ARIA labels and tooltips in this repository must maintain French localization (e.g., 'Agrandir' instead of 'Maximize').
+**Action:** Pair `opacity-0 group-hover:opacity-100` with `focus:opacity-100` to ensure keyboard users can reveal and interact with the element upon focus. Ensure localized French labels are consistently applied to icon-only buttons.
