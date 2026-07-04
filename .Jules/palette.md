@@ -1,0 +1,3 @@
+## 2025-05-18 - Essential focus visibility and responsive labels
+**Learning:** When using `opacity-0 group-hover:opacity-100` to hide buttons visually until hovered, it completely prevents keyboard users from knowing when they have focused the button unless `focus:opacity-100` (or similar) is also added. Additionally, when using `hidden sm:inline` on button text, screen readers and mobile users lose context unless `aria-label` is explicitly provided.
+**Action:** Always pair hover-reveal patterns (`group-hover:opacity-X`) with focus-reveal patterns (`focus:opacity-X` or `focus-within:opacity-X`). Always provide explicit `aria-label` and `title` when visually hiding text at smaller breakpoints.
