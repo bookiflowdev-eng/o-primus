@@ -1,0 +1,3 @@
+## 2024-05-18 - Missing ARIA Labels on Icon-only Buttons
+**Learning:** Icon-only buttons (like LogOut) are frequently missing `aria-label`s, rendering them inaccessible to screen readers. Furthermore, adding `focus-visible` styles with appropriate `ring-offset` matching the background color is critical for keyboard accessibility, especially in dark themes where standard outlines might be invisible.
+**Action:** Always verify that icon-only buttons have descriptive `aria-label` and `title` attributes (matching the app's localization). Ensure the internal SVG has `aria-hidden="true"`. Apply `focus-visible` classes with explicit `ring-offset-color` matching the surrounding container to guarantee focus visibility.
