@@ -1,0 +1,38 @@
+
+> @ dev /app
+> next dev
+
+   ▲ Next.js 15.5.20
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.0.2:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1972ms
+ ○ Compiling / ...
+ ✓ Compiled / in 7.7s (808 modules)
+ GET / 200 in 8457ms
+ ○ Compiling /api/auth/[...nextauth] ...
+ ✓ Compiled /api/auth/[...nextauth] in 4.5s (1221 modules)
+ ⨯ No HTTP methods exported in '/app/src/app/api/generations/route.ts'. Export a named export for each HTTP method.
+ GET /api/generations?userId=dev-user-123&quotaOnly=true 405 in 5133ms
+ GET /api/auth/session 200 in 5275ms
+ GET / 200 in 182ms
+[next-auth][warn][NEXTAUTH_URL]
+https://next-auth.js.org/warnings#nextauth_url
+[next-auth][warn][NO_SECRET]
+https://next-auth.js.org/warnings#no_secret
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 922ms (1264 modules)
+ GET /dashboard 200 in 1437ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 629ms (1269 modules)
+ GET /noise.webp 404 in 919ms
+ ⨯ No HTTP methods exported in '/app/src/app/api/generations/route.ts'. Export a named export for each HTTP method.
+ GET /api/generations?userId=dev-user-123&quotaOnly=true 405 in 88ms
+[next-auth][warn][NEXTAUTH_URL]
+https://next-auth.js.org/warnings#nextauth_url
+[next-auth][warn][NO_SECRET]
+https://next-auth.js.org/warnings#no_secret
+ GET /api/auth/session 200 in 309ms
+ GET /api/generations?userId=dev-user-123&quotaOnly=true 405 in 260ms
