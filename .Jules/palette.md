@@ -1,0 +1,3 @@
+## 2025-02-12 - Dark Mode Focus Rings & Icon Accessibility
+**Learning:** In dark mode interfaces, simple `focus-visible:ring` often blends into the background if a `ring-offset` isn't provided. Furthermore, interactive elements containing only icons need both `aria-label` (for screen readers) and `title` (for mouse hover), while the SVG icons themselves must have `aria-hidden="true"` to prevent redundant screen reader announcements.
+**Action:** When implementing icon-only buttons or dark-mode links, always pair `focus-visible:ring-offset-<color>` matching the specific container background (e.g., `#050505` for a sidebar vs `#030303` for a footer) alongside `aria-label` on the parent and `aria-hidden="true"` on the child SVG.
