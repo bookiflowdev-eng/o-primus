@@ -1,0 +1,3 @@
+## 2026-07-15 - Icon-Only Button Accessibility Pattern
+**Learning:** In this application's components, icon-only buttons (like LogOut) often use internal SVGs and suppress focus outlines. It's critical to pair the `aria-label`/`title` on the button with `aria-hidden="true"` on the internal SVG to prevent redundant screen reader announcements, and restore keyboard visibility using `focus-visible:ring-offset-[color]` to match specific backgrounds (e.g., `#050505` in the sidebar).
+**Action:** When creating or modifying icon-only buttons, always apply this pattern: `<button aria-label="..." title="..." className="focus:outline-none focus-visible:ring-2 ..."><Icon aria-hidden="true" /></button>`.
