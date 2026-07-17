@@ -1,0 +1,3 @@
+## 2026-07-17 - AppShell Icon-Only Logout Accessibility
+**Learning:** Icon-only interactive buttons in persistent shell components like `AppShell` are frequently skipped over for accessibility when they employ `focus:outline-none`. A pattern of adding explicit `focus-visible` with a matched `ring-offset` to the dark mode sidebar background (`#050505`) is critical for keyboard-only users, alongside the required `aria-label` and `title`.
+**Action:** When auditing or implementing sidebar and navigation components in this design system, standardise icon-only buttons to explicitly define `aria-label`, `title`, `focus-visible` fallback styles that respect the exact background hex for offsets, and apply `aria-hidden="true"` to the SVG itself.
