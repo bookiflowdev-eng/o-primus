@@ -1,0 +1,3 @@
+## 2026-07-24 - [AppShell LogOut Accessibility]
+**Learning:** Icon-only buttons require localized ARIA attributes ('Se déconnecter' for French interfaces), explicit `aria-hidden="true"` on the internal SVG to prevent redundant screen reader announcements, and a corresponding `focus-visible:ring-offset-[#030303]` to maintain visibility against dark backgrounds since `focus:outline-none` is used.
+**Action:** Always pair `focus:outline-none` with `focus-visible` and matching ring offsets on interactive elements. Add localized ARIA labels and explicit `aria-hidden` on decorative SVG icons within buttons.
