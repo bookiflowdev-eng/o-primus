@@ -48,8 +48,13 @@ export const SotyProbePopover: React.FC<SotyProbePopoverProps> = ({ onClose }) =
           <Radar size={14} className={isProbing ? "animate-[spin_2s_linear_infinite]" : ""} />
           <span className="text-[10px] font-mono font-bold tracking-widest uppercase">Deep Web Probe</span>
         </div>
-        <button onClick={onClose} className="text-white/40 hover:text-white transition-colors">
-          <X size={14} />
+        <button
+          onClick={onClose}
+          className="text-white/40 hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#18181B] focus-visible:ring-blue-500 rounded p-1"
+          aria-label="Fermer"
+          title="Fermer"
+        >
+          <X size={14} aria-hidden="true" />
         </button>
       </div>
 
@@ -63,13 +68,16 @@ export const SotyProbePopover: React.FC<SotyProbePopoverProps> = ({ onClose }) =
             placeholder="https://awwwards.com/..."
             className="w-full bg-neutral-900/50 text-xs text-white placeholder-white/30 border border-white/10 rounded-lg py-2 pl-3 pr-8 outline-none focus:border-blue-500/50 transition-colors disabled:opacity-50"
             onKeyDown={(e) => e.key === 'Enter' && handleProbe()}
+            aria-label="URL à scanner"
           />
           <button 
             onClick={handleProbe}
             disabled={isProbing || !url}
-            className="absolute right-1 top-1 bottom-1 px-2 flex items-center justify-center text-blue-400 hover:text-blue-300 disabled:opacity-30 transition-colors"
+            className="absolute right-1 top-1 bottom-1 px-2 flex items-center justify-center text-blue-400 hover:text-blue-300 disabled:opacity-30 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#18181B] focus-visible:ring-blue-500 rounded"
+            aria-label="Lancer l'extraction"
+            title="Lancer l'extraction"
           >
-            <ArrowRight size={14} />
+            <ArrowRight size={14} aria-hidden="true" />
           </button>
         </div>
       ) : (

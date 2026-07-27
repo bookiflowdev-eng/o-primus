@@ -159,8 +159,13 @@ export default function OmniBar() {
         className="fixed top-0 left-0 flex items-center gap-3 bg-gradient-to-b from-[#18181B] to-black border border-white/20 rounded-xl p-2 shadow-2xl cursor-grab pointer-events-auto" 
         onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
       >
-        <button onClick={(e) => { e.stopPropagation(); setIsMinimized(false); }} className="w-8 h-8 rounded-md bg-white/5 border border-white/10 text-neutral-400 flex items-center justify-center hover:text-white transition-colors">
-          <Maximize2 size={14} />
+        <button
+          onClick={(e) => { e.stopPropagation(); setIsMinimized(false); }}
+          className="w-8 h-8 rounded-md bg-white/5 border border-white/10 text-neutral-400 flex items-center justify-center hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#18181B] focus-visible:ring-blue-500"
+          aria-label="Agrandir la barre de commande"
+          title="Agrandir la barre de commande"
+        >
+          <Maximize2 size={14} aria-hidden="true" />
         </button>
         <span className="text-[10px] font-mono text-neutral-400 pr-4 uppercase tracking-widest">Nexus Command</span>
       </div>
@@ -183,8 +188,13 @@ export default function OmniBar() {
           <GripHorizontal size={14} className="text-white/60 pointer-events-none" />
           <span className="text-[10px] font-mono text-white/50 uppercase tracking-widest pointer-events-none">Nexus Command Center</span>
         </div>
-        <button onClick={(e) => { e.stopPropagation(); setIsMinimized(true); }} className="text-white/50 hover:text-white transition-colors p-1">
-          <Minimize2 size={14} />
+        <button
+          onClick={(e) => { e.stopPropagation(); setIsMinimized(true); }}
+          className="text-white/50 hover:text-white transition-colors p-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#18181B] focus-visible:ring-blue-500 rounded"
+          aria-label="Réduire la barre de commande"
+          title="Réduire la barre de commande"
+        >
+          <Minimize2 size={14} aria-hidden="true" />
         </button>
       </div>
 
@@ -195,8 +205,13 @@ export default function OmniBar() {
           <div className="flex gap-3 mb-3">
             {attachments.map(att => (
               <div key={att.id} className="relative group w-14 h-14 rounded-lg overflow-hidden border border-white/20 shadow-sm">
-                {att.type === 'image' ? <img src={att.preview} className="w-full h-full object-cover" alt="" /> : <div className="w-full h-full flex items-center justify-center bg-[#111] text-neutral-300"><FileCode size={18} /></div>}
-                <button onClick={() => setAttachments(prev => prev.filter(a => a.id !== att.id))} className="absolute top-1 right-1 bg-neutral-900 text-white border border-white/20 rounded-md p-1 opacity-0 group-hover:opacity-100 transition-all"><X size={10} /></button>
+                {att.type === 'image' ? <img src={att.preview} className="w-full h-full object-cover" alt="Pièce jointe" /> : <div className="w-full h-full flex items-center justify-center bg-[#111] text-neutral-300"><FileCode size={18} aria-hidden="true" /></div>}
+                <button
+                  onClick={() => setAttachments(prev => prev.filter(a => a.id !== att.id))}
+                  className="absolute top-1 right-1 bg-neutral-900 text-white border border-white/20 rounded-md p-1 opacity-0 group-hover:opacity-100 focus:opacity-100 focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-offset-black focus-visible:ring-red-500 transition-all"
+                  aria-label="Supprimer la pièce jointe"
+                  title="Supprimer la pièce jointe"
+                ><X size={10} aria-hidden="true" /></button>
               </div>
             ))}
           </div>
@@ -216,39 +231,59 @@ export default function OmniBar() {
 
       <div className="flex items-center justify-between px-3 pb-3 pt-2 border-t border-white/15 bg-black">
         <div className="flex items-center gap-1">
-          <button onClick={() => fileInputRef.current?.click()} className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors flex items-center gap-2 text-xs font-medium">
-            <Paperclip size={16} /> <span className="hidden sm:inline">Joindre</span>
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors flex items-center gap-2 text-xs font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-blue-500"
+            aria-label="Joindre un fichier"
+          >
+            <Paperclip size={16} aria-hidden="true" /> <span className="hidden sm:inline">Joindre</span>
           </button>
           <div className="w-px h-4 bg-white/20 mx-1" />
           <div className="relative">
             {showSotyProbe && <SotyProbePopover onClose={() => setShowSotyProbe(false)} />}
             <button 
               onClick={() => setShowSotyProbe(!showSotyProbe)}
-              className={`p-2 rounded-md transition-all relative ${sotyProbeData ? 'text-blue-400 bg-blue-500/10 border border-blue-500/30 shadow-[0_0_10px_rgba(59,130,246,0.3)]' : 'text-white/60 hover:text-white hover:bg-white/10 border border-transparent'}`} 
+              className={`p-2 rounded-md transition-all relative focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-blue-500 ${sotyProbeData ? 'text-blue-400 bg-blue-500/10 border border-blue-500/30 shadow-[0_0_10px_rgba(59,130,246,0.3)]' : 'text-white/60 hover:text-white hover:bg-white/10 border border-transparent'}`}
+              aria-label="Scanner la page actuelle (Soty Probe)"
+              title="Scanner la page actuelle (Soty Probe)"
             >
-              <Globe size={16} />
+              <Globe size={16} aria-hidden="true" />
               {sotyProbeData && <span className="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full shadow-[0_0_5px_rgba(59,130,246,1)]" />}
             </button>
           </div>
-          <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors"><FolderArchive size={16} /></button>
-          <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors"><LayoutTemplate size={16} /></button>
-          <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors"><Settings2 size={16} /></button>
+          <button
+            className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-blue-500"
+            aria-label="Ouvrir les archives"
+            title="Ouvrir les archives"
+          ><FolderArchive size={16} aria-hidden="true" /></button>
+          <button
+            className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-blue-500"
+            aria-label="Gérer les modèles de mise en page"
+            title="Gérer les modèles de mise en page"
+          ><LayoutTemplate size={16} aria-hidden="true" /></button>
+          <button
+            className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-blue-500"
+            aria-label="Paramètres de la barre de commande"
+            title="Paramètres de la barre de commande"
+          ><Settings2 size={16} aria-hidden="true" /></button>
         </div>
 
         <div className="flex items-center gap-2">
           <button 
             onClick={() => setIsAgentic(!isAgentic)} 
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium tracking-wide transition-all ${isAgentic ? 'text-white bg-blue-600/20 border border-blue-500/50 shadow-[0_0_10px_rgba(59,130,246,0.2)]' : 'text-white/60 hover:bg-white/10 border border-transparent'}`}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium tracking-wide transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-blue-500 ${isAgentic ? 'text-white bg-blue-600/20 border border-blue-500/50 shadow-[0_0_10px_rgba(59,130,246,0.2)]' : 'text-white/60 hover:bg-white/10 border border-transparent'}`}
           >
-            {isAgentic ? <BrainCircuit size={14} className="text-blue-400" /> : <Zap size={14} className="text-yellow-400" />} 
+            {isAgentic ? <BrainCircuit size={14} className="text-blue-400" aria-hidden="true" /> : <Zap size={14} className="text-yellow-400" aria-hidden="true" />}
             {isAgentic ? 'RÉFLEXION LENTE' : 'DRAFT'}
           </button>
           <button 
             onClick={handleSubmit}
             disabled={isGenerating || (!input.trim() && attachments.length === 0)} 
-            className="flex items-center justify-center h-8 w-10 rounded-md bg-white text-black hover:bg-neutral-200 disabled:opacity-20 disabled:bg-white/10 transition-all shadow-md"
+            className="flex items-center justify-center h-8 w-10 rounded-md bg-white text-black hover:bg-neutral-200 disabled:opacity-20 disabled:bg-white/10 transition-all shadow-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-blue-500"
+            aria-label="Envoyer la directive"
+            title="Envoyer la directive"
           >
-            {isGenerating ? <Loader2 size={16} className="animate-spin text-neutral-500" /> : <ArrowUp size={18} strokeWidth={3} />}
+            {isGenerating ? <Loader2 size={16} className="animate-spin text-neutral-500" aria-hidden="true" /> : <ArrowUp size={18} strokeWidth={3} aria-hidden="true" />}
           </button>
         </div>
       </div>
