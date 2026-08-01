@@ -1,0 +1,3 @@
+## 2026-08-01 - Focus Outline Fallbacks in Dark Mode
+**Learning:** This app heavily uses `focus:outline-none` to override default browser rings, which breaks keyboard accessibility. When adding fallbacks against dark backgrounds, using offset colors (`focus-visible:ring-offset-black`) is critical so the focus ring remains visually distinct instead of blending in.
+**Action:** Always pair `focus:outline-none` with `focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black` (or similar offsets matching the background) and explicitly add a slight border-radius (`rounded-sm`) to ensure the focus ring renders cleanly.
