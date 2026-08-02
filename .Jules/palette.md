@@ -1,0 +1,3 @@
+## 2025-05-18 - Missing Accessibility Attributes on Icon-Only Buttons
+**Learning:** Found a pattern where icon-only buttons (like LogOut) are missing accessible labels (aria-label, title) and keyboard focus indicators (focus-visible). Additionally, inner icons (like lucide-react components) often lack aria-hidden="true" to prevent redundant screen reader announcements.
+**Action:** When inspecting components, proactively check and add `aria-label`, `title`, `aria-hidden="true"` on inner icons, and ensure keyboard navigation works well by adding `focus-visible` classes, specifically accounting for offset colors matching the background.
