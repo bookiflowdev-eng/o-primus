@@ -1,0 +1,3 @@
+## 2026-08-06 - OmniBar Widget Accessibility
+**Learning:** Icon-only control widgets (like the minimize/maximize buttons in the OmniBar) require both `focus-visible` styling (with appropriate offsets for dark backgrounds) and explicitly hidden SVG icons (`aria-hidden="true"`) to prevent redundant screen reader announcements while remaining keyboard accessible.
+**Action:** When creating draggable or absolute-positioned control widgets, always pair hover states with `focus-visible` styles using `ring-offset-black` for dark interfaces, and explicitly provide translated `aria-label`s for all icon-only interactions.
