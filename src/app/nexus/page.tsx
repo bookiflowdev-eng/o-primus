@@ -134,35 +134,35 @@ export default function NexusWorkspace() {
             <div className="flex bg-neutral-900/40 rounded-lg p-1 border border-white/5">
               <button
                 onClick={() => setViewMode('preview')}
-                className={`flex items-center gap-2 px-4 py-1.5 rounded-md text-[11px] font-bold tracking-wider transition-all ${
+                className={`flex items-center gap-2 px-4 py-1.5 rounded-md text-[11px] font-bold tracking-wider transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                   viewMode === 'preview'
                     ? 'bg-blue-600 text-white'
                     : 'text-neutral-500 hover:text-white'
                 }`}
               >
-                <MonitorPlay size={14} /> RENDER
+                <MonitorPlay size={14} aria-hidden="true" /> RENDER
               </button>
 
               <button
                 onClick={() => setViewMode('code')}
-                className={`flex items-center gap-2 px-4 py-1.5 rounded-md text-[11px] font-bold tracking-wider transition-all ${
+                className={`flex items-center gap-2 px-4 py-1.5 rounded-md text-[11px] font-bold tracking-wider transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                   viewMode === 'code'
                     ? 'bg-white/10 text-white'
                     : 'text-neutral-500 hover:text-white'
                 }`}
               >
-                <Code2 size={14} /> SOURCE
+                <Code2 size={14} aria-hidden="true" /> SOURCE
               </button>
 
               <button
                 onClick={() => setViewMode('benchmark')}
-                className={`flex items-center gap-2 px-4 py-1.5 rounded-md text-[11px] font-bold tracking-wider transition-all ${
+                className={`flex items-center gap-2 px-4 py-1.5 rounded-md text-[11px] font-bold tracking-wider transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                   viewMode === 'benchmark'
                     ? 'bg-white/10 text-white'
                     : 'text-neutral-500 hover:text-white'
                 }`}
               >
-                <FlaskConical size={14} /> BENCHMARK
+                <FlaskConical size={14} aria-hidden="true" /> BENCHMARK
               </button>
             </div>
 
@@ -172,37 +172,40 @@ export default function NexusWorkspace() {
                 <button
                   onClick={() => setDeviceMode('desktop')}
                   title="Desktop (Plein écran)"
-                  className={`p-1.5 rounded-md transition-all ${
+                  aria-label="Desktop (Plein écran)"
+                  className={`p-1.5 rounded-md transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                     deviceMode === 'desktop'
                       ? 'bg-white/10 text-white'
                       : 'text-neutral-500 hover:text-white'
                   }`}
                 >
-                  <Monitor size={14} />
+                  <Monitor size={14} aria-hidden="true" />
                 </button>
 
                 <button
                   onClick={() => setDeviceMode('tablet')}
                   title="Tablette (768px)"
-                  className={`p-1.5 rounded-md transition-all ${
+                  aria-label="Tablette (768px)"
+                  className={`p-1.5 rounded-md transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                     deviceMode === 'tablet'
                       ? 'bg-white/10 text-white'
                       : 'text-neutral-500 hover:text-white'
                   }`}
                 >
-                  <Tablet size={14} />
+                  <Tablet size={14} aria-hidden="true" />
                 </button>
 
                 <button
                   onClick={() => setDeviceMode('mobile')}
                   title="Mobile (375px)"
-                  className={`p-1.5 rounded-md transition-all ${
+                  aria-label="Mobile (375px)"
+                  className={`p-1.5 rounded-md transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                     deviceMode === 'mobile'
                       ? 'bg-white/10 text-white'
                       : 'text-neutral-500 hover:text-white'
                   }`}
                 >
-                  <Smartphone size={14} />
+                  <Smartphone size={14} aria-hidden="true" />
                 </button>
               </div>
             )}
