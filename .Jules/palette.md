@@ -1,0 +1,3 @@
+## 2026-08-07 - Icon-Only Button Accessibility in Complex Toolbars
+**Learning:** Icon-only buttons within complex, dynamic toolbar interfaces (like Nexus view/device toggles) often omit accessible names, relying solely on visual cues or insufficient `title` attributes. These elements require both explicit `aria-label`s for screen readers and visible focus rings (`focus-visible:ring`) to ensure they remain accessible to keyboard users when removed from standard document flow.
+**Action:** Always pair icon-only interactive elements with an `aria-label` (matching the localization) and a `focus-visible` utility class to ensure comprehensive accessibility across both screen readers and pointer devices.
