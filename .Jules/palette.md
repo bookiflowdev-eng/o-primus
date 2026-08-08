@@ -1,0 +1,3 @@
+## 2024-08-08 - Accessible Focus States & Icon Buttons in Dark Mode
+**Learning:** Keyboard focus accessibility in deep dark mode (`bg-[#050505]`, `bg-[#030303]`) requires specific `ring-offset` color definitions to ensure contrast and visibility. Without it, the default browser ring or transparent rings get completely lost. Also, strict localization means `aria-label`s on icon-only buttons like LogOut must be localized to French ("Se déconnecter").
+**Action:** When adding `focus-visible` classes in dark mode containers, explicitly specify `focus-visible:ring-offset-<hex>` to match the container's background color, and always add `aria-hidden="true"` on internal SVG icons to prevent redundant screen reader announcements.
