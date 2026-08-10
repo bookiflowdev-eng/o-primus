@@ -1,0 +1,3 @@
+## $(date +%Y-%m-%d) - Accessible Sign-Out Action in AppShell
+**Learning:** Icon-only interactive elements in structural layout components (like a sidebar footer) are easily missed for accessibility. When adding focus rings on dark themes, selecting an offset color that explicitly matches the container's background (e.g., `#050505`) instead of a generic `#000` ensures a crisp and visible focus state. Furthermore, SVG icons within such elements must be hidden (`aria-hidden="true"`) to prevent redundant screen reader announcements.
+**Action:** Always verify the computed background color of the parent container when implementing `focus-visible:ring-offset` classes on dark-themed components.
