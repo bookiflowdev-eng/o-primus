@@ -1,0 +1,3 @@
+## 2024-08-12 - Ensure keyboard visibility for hidden-on-hover actions
+**Learning:** When using Tailwind utility classes like `opacity-0 group-hover:opacity-100` for actions that should only appear on hover (e.g., delete buttons on attachments), these buttons become inaccessible to keyboard-only users who navigate via Tab, as the element receives focus but remains at `opacity-0` since no hover event is triggered.
+**Action:** Always pair `group-hover:opacity-100` with `focus:opacity-100` (or `focus-within:opacity-100` on the parent container) alongside robust `focus-visible` styles to ensure the interactive element becomes fully visible and clearly focused when accessed via keyboard navigation.
