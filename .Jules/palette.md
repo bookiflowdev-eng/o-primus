@@ -1,0 +1,3 @@
+## 2025-02-23 - Accessible Icon Buttons
+**Learning:** Icon-only buttons often lack context for screen readers and keyboard users. Using `focus:outline-none` removes the native focus ring, leading to poor keyboard accessibility if a replacement isn't provided.
+**Action:** When creating icon-only buttons, always apply explicit `aria-label` and `title` attributes. Add `aria-hidden="true"` to inner SVGs to avoid redundant announcements. Pair `focus:outline-none` with `focus-visible:ring-*` classes and match offset colors (e.g., `focus-visible:ring-offset-[#050505]`) to ensure the focus state is clearly visible for keyboard navigation.
