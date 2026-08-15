@@ -72,8 +72,13 @@ export function VaultModal({ isOpen, onClose }: VaultModalProps) {
               <p className="text-xs text-white/40 font-mono mt-0.5">HISTORIQUE DES ARCHITECTURES</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2.5 text-white/40 hover:text-white hover:bg-white/10 rounded-xl transition-all">
-            <X size={20} />
+          <button
+            onClick={onClose}
+            className="p-2.5 text-white/40 hover:text-white hover:bg-white/10 rounded-xl transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0c]"
+            aria-label="Fermer le Vault"
+            title="Fermer le Vault"
+          >
+            <X size={20} aria-hidden="true" />
           </button>
         </div>
 
@@ -114,11 +119,21 @@ export function VaultModal({ isOpen, onClose }: VaultModalProps) {
                           onKeyDown={(e) => handleKeyDown(e, item.id)}
                           className="bg-black border border-blue-500/50 text-white text-base font-medium px-3 py-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500/30 w-full max-w-md transition-all"
                         />
-                        <button onClick={() => handleSaveEdit(item.id)} className="p-1.5 bg-blue-500/20 text-blue-400 hover:bg-blue-500/40 rounded-md transition-colors">
-                          <Check size={16} />
+                        <button
+                          onClick={() => handleSaveEdit(item.id)}
+                          className="p-1.5 bg-blue-500/20 text-blue-400 hover:bg-blue-500/40 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#111]"
+                          aria-label="Sauvegarder le nom"
+                          title="Sauvegarder"
+                        >
+                          <Check size={16} aria-hidden="true" />
                         </button>
-                        <button onClick={() => setEditingId(null)} className="p-1.5 bg-white/10 text-white/60 hover:text-white hover:bg-white/20 rounded-md transition-colors">
-                          <X size={16} />
+                        <button
+                          onClick={() => setEditingId(null)}
+                          className="p-1.5 bg-white/10 text-white/60 hover:text-white hover:bg-white/20 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#111]"
+                          aria-label="Annuler l'édition"
+                          title="Annuler"
+                        >
+                          <X size={16} aria-hidden="true" />
                         </button>
                       </div>
                     ) : (
@@ -126,10 +141,11 @@ export function VaultModal({ isOpen, onClose }: VaultModalProps) {
                         <h3 className="text-white font-medium text-base truncate">{item.title || 'Architecture sans nom'}</h3>
                         <button 
                           onClick={() => { setEditingId(item.id); setEditValue(item.title || ''); }}
-                          className="opacity-0 group-hover:opacity-100 p-1.5 text-white/40 hover:text-white hover:bg-white/10 rounded-md transition-all"
+                          className="opacity-0 group-hover:opacity-100 focus:opacity-100 p-1.5 text-white/40 hover:text-white hover:bg-white/10 rounded-md transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#111]"
+                          aria-label="Renommer l'architecture"
                           title="Renommer"
                         >
-                          <Edit2 size={14} />
+                          <Edit2 size={14} aria-hidden="true" />
                         </button>
                       </div>
                     )}
@@ -153,19 +169,20 @@ export function VaultModal({ isOpen, onClose }: VaultModalProps) {
                   </div>
 
                   {/* Actions */}
-                  <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200">
                     <button 
                       onClick={() => { loadItemToCanvas(item); onClose(); }}
-                      className="px-5 py-2.5 bg-white text-black hover:bg-neutral-200 text-sm font-semibold rounded-lg transition-colors shadow-md"
+                      className="px-5 py-2.5 bg-white text-black hover:bg-neutral-200 text-sm font-semibold rounded-lg transition-colors shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#111]"
                     >
                       Restaurer
                     </button>
                     <button 
                       onClick={() => deleteItem(item.id)}
-                      className="p-2.5 text-white/30 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
+                      className="p-2.5 text-white/30 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#111]"
+                      aria-label="Détruire l'architecture"
                       title="Détruire"
                     >
-                      <Trash2 size={18} />
+                      <Trash2 size={18} aria-hidden="true" />
                     </button>
                   </div>
                 </div>

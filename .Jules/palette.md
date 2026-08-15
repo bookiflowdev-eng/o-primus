@@ -1,0 +1,3 @@
+## 2025-02-12 - Accessibility of Hidden-on-Hover Icon Buttons
+**Learning:** In the Nexus Vault, icon-only action buttons (Edit, Delete, Restore) were hidden by default using `opacity-0 group-hover:opacity-100`. This causes a major accessibility issue for keyboard users, as the buttons receive focus but remain invisible, and screen readers redundantly announce the internal SVGs.
+**Action:** When implementing hidden-on-hover UI patterns, ALWAYS pair them with `focus-within:opacity-100` (or `focus:opacity-100`) to ensure they become visible during keyboard navigation. Add `aria-label` and `title` to the buttons, and explicitly set `aria-hidden="true"` on the internal decorative SVGs.
