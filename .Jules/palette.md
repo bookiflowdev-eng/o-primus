@@ -1,0 +1,3 @@
+## 2024-05-15 - Icon-Only Button Accessibility Pattern
+**Learning:** Icon-only interactive elements lack context for screen readers and can be difficult to perceive when using keyboard navigation, especially when `focus:outline-none` is applied to hide default browser focus rings on dark backgrounds.
+**Action:** When creating icon-only buttons, always apply explicit `aria-label` and `title` attributes matching the application localization (e.g., "Se déconnecter" instead of "Log out" for French apps), add `aria-hidden="true"` to the inner decorative SVG icon, and restore keyboard visibility with `focus-visible` offset classes explicitly tailored to the parent background color (e.g., `focus-visible:ring-offset-[#030303]`).
