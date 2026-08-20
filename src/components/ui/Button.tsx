@@ -13,7 +13,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className = '', variant = 'primary', size = 'md', shape = 'default', isLoading, children, disabled, ...props }, ref) => {
     
     // Base mécanique : Transition rapide, aucune élévation fantaisiste
-    const baseClasses = 'relative inline-flex items-center justify-center gap-2 font-medium tracking-wide transition-all duration-200 ease-out focus:outline-none disabled:opacity-30 disabled:pointer-events-none will-change-transform'
+    const baseClasses = 'relative inline-flex items-center justify-center gap-2 font-medium tracking-wide transition-all duration-200 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white focus-visible:ring-offset-[#050505] disabled:opacity-30 disabled:pointer-events-none will-change-transform'
     
     const shapeClasses = shape === 'pill' ? 'rounded-full' : 'rounded-[8px]'
 
