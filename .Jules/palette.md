@@ -1,0 +1,3 @@
+## 2024-03-24 - Focus Visible Offsets in Dark Mode & Icon Buttons
+**Learning:** When using `focus-visible` classes on dark backgrounds (like `#030303`), a standard white focus ring can blend in or look muddy without an offset. Additionally, icon-only buttons need explicit `aria-label`/`title` while hiding the inner decorative SVG with `aria-hidden="true"`.
+**Action:** Always include a `focus-visible:ring-offset-2` with a matching background color (e.g., `focus-visible:ring-offset-[#030303]`) to ensure the focus ring remains visually distinct. For icon buttons, always add localized accessible labels and hide the SVG from screen readers.
