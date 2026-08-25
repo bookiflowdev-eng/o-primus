@@ -1,0 +1,3 @@
+## 2024-08-25 - AppShell LogOut Accessibility
+**Learning:** Icon-only interactive elements in dark-mode specific components (like the AppShell footer Bento box) lack explicit text labels and visual focus states when navigating by keyboard, failing to accommodate screen readers and pointer-device users properly.
+**Action:** Add localized `aria-label` and `title` attributes (e.g., "Se déconnecter"), mark the decorative icon with `aria-hidden="true"`, and include dark-mode specific offset ring classes (`focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#030303]`) matching the parent background.
