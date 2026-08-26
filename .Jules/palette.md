@@ -1,0 +1,3 @@
+## 2026-08-26 - Icon-Only Buttons Accessibility
+**Learning:** Icon-only buttons (like LogOut) against dark backgrounds require specific attention: `aria-label` and `title` for screen readers/hover context, `aria-hidden="true"` on the internal SVG to prevent redundant announcements, and explicit `focus-visible:ring-offset-[color]` to ensure the focus ring is visible against the specific dark background color.
+**Action:** Always add this trio of attributes (`aria-label`, `title`, `aria-hidden` on icon) and ensure `focus-visible` is implemented with appropriate offsets on icon-only interactive elements.
