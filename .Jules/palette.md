@@ -1,0 +1,3 @@
+## 2024-08-28 - Icon-Only Action Buttons Accessibility
+**Learning:** Icon-only action buttons (like the AppShell sidebar's LogOut button) are completely opaque to screen readers if missing `aria-label` and `title`, and invisible to keyboard navigators when missing explicit focus states, especially on dark themes.
+**Action:** When auditing sidebar/app-shell components, always ensure icon-only utility buttons have localized `aria-label` and `title`, `aria-hidden="true"` on the SVG icon, and explicit focus rings with appropriate offset colors (e.g., `focus-visible:ring-offset-[#030303]`) matching their background context.
