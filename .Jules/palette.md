@@ -1,0 +1,3 @@
+## 2024-11-28 - Focus Visibility on Custom Dark Backgrounds
+**Learning:** When adding focus states to interactive elements on custom dark backgrounds (e.g., `#030303`), a standard white/transparent ring may not provide enough contrast or might blend in. Using a specific ring offset color that matches the surrounding background (like `focus-visible:ring-offset-[#030303]`) ensures the focus ring remains visually distinct and accessible for keyboard navigation.
+**Action:** Always check the explicit background color of the parent container when adding `focus-visible` classes, and specify a corresponding `focus-visible:ring-offset-*` color to guarantee the focus ring is clear and unambiguous.
