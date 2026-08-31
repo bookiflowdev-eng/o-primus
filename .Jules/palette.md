@@ -1,0 +1,4 @@
+
+## 2026-08-31 - Keyboard Focus Visibility on Dark Themes
+**Learning:** When using `focus:outline-none` to remove default browser focus rings on dark-themed interfaces, adding `focus-visible:ring-2 focus-visible:ring-white/50` is essential for keyboard accessibility. However, it's critical to also add `focus-visible:ring-offset-2` with a `focus-visible:ring-offset-[COLOR]` that exactly matches the component's background color (e.g., `black` for navbar/app shell, `#030303` for footer). Without the offset matching the background, the focus ring blends into the dark background and fails contrast requirements.
+**Action:** Always pair `focus-visible:ring-*` with a specifically colored `focus-visible:ring-offset-*` that matches the background color when building dark mode components in this system.
