@@ -139,7 +139,7 @@ DOMAIN CONTEXT:
 CONSTRAINTS:
 - FORBIDDEN jargon: ${domainProfile!.forbiddenJargon.join(', ')}
 - REQUIRED keywords: ${domainProfile!.requiredKeywords.join(', ')}
-- Proof points needed: ${domainProfile!.proofPointsRequired.map((p) => \`\${p.type} (x\${p.count})\`).join(', ')}
+- Proof points needed: ${domainProfile!.proofPointsRequired.map((p) => `${p.type} (x${p.count})`).join(', ')}
 
 USER PROMPT: "${input.userPrompt}"
 
