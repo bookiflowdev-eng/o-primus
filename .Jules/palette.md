@@ -1,0 +1,3 @@
+## 2024-09-03 - Accessible Icon Buttons Require Explicit focus-visible
+**Learning:** Overriding default focus styles with `focus:outline-none` on interactive elements like icon-only buttons removes critical visual cues for keyboard navigation. Additionally, SVG icons inside such buttons can be redundantly announced by screen readers if they lack `aria-hidden="true"`.
+**Action:** When styling interactive elements, always pair `focus:outline-none` with explicit `focus-visible` ring utilities tailored to the background context (e.g., `focus-visible:ring-offset-[#030303]`). Add `aria-label` and `title` to the button, and explicitly mark decorative internal SVGs with `aria-hidden="true"`.
