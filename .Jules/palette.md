@@ -1,0 +1,3 @@
+## 2024-09-04 - Keyboard Accessibility Pattern
+**Learning:** `focus:outline-none` is frequently used across this application to remove default browser outlines, which entirely breaks keyboard accessibility unless explicitly paired with a `focus-visible` ring. Furthermore, ring offsets (`focus-visible:ring-offset-*`) must be carefully matched to the surrounding component's dark background color (e.g., `#030303` for the AppShell footer).
+**Action:** When working on interactive elements, always ensure `focus:outline-none` is paired with `focus-visible` classes with proper offset colors for contrast.
