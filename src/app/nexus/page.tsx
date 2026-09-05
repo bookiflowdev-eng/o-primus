@@ -171,38 +171,41 @@ export default function NexusWorkspace() {
               <div className="flex bg-neutral-900/40 rounded-lg p-1 border border-white/5 animate-in fade-in slide-in-from-left-4">
                 <button
                   onClick={() => setDeviceMode('desktop')}
-                  title="Desktop (Plein écran)"
-                  className={`p-1.5 rounded-md transition-all ${
+                  title="Vue Bureau (Plein écran)"
+                  aria-label="Vue Bureau (Plein écran)"
+                  className={`p-1.5 rounded-md transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-1 focus-visible:ring-offset-[#18181B] ${
                     deviceMode === 'desktop'
                       ? 'bg-white/10 text-white'
                       : 'text-neutral-500 hover:text-white'
                   }`}
                 >
-                  <Monitor size={14} />
+                  <Monitor size={14} aria-hidden="true" />
                 </button>
 
                 <button
                   onClick={() => setDeviceMode('tablet')}
-                  title="Tablette (768px)"
-                  className={`p-1.5 rounded-md transition-all ${
+                  title="Vue Tablette (768px)"
+                  aria-label="Vue Tablette (768px)"
+                  className={`p-1.5 rounded-md transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-1 focus-visible:ring-offset-[#18181B] ${
                     deviceMode === 'tablet'
                       ? 'bg-white/10 text-white'
                       : 'text-neutral-500 hover:text-white'
                   }`}
                 >
-                  <Tablet size={14} />
+                  <Tablet size={14} aria-hidden="true" />
                 </button>
 
                 <button
                   onClick={() => setDeviceMode('mobile')}
-                  title="Mobile (375px)"
-                  className={`p-1.5 rounded-md transition-all ${
+                  title="Vue Mobile (375px)"
+                  aria-label="Vue Mobile (375px)"
+                  className={`p-1.5 rounded-md transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-1 focus-visible:ring-offset-[#18181B] ${
                     deviceMode === 'mobile'
                       ? 'bg-white/10 text-white'
                       : 'text-neutral-500 hover:text-white'
                   }`}
                 >
-                  <Smartphone size={14} />
+                  <Smartphone size={14} aria-hidden="true" />
                 </button>
               </div>
             )}

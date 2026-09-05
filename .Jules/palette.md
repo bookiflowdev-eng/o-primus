@@ -1,0 +1,3 @@
+## 2024-06-25 - Contextual Accessibility for Icon-only Utility Bars
+**Learning:** Icon-only control bars (like the Nexus OmniBar) frequently lack screen-reader context and keyboard focus states. When users navigate quickly, tooltips (`title`) are insufficient without matching `aria-label`s. Furthermore, `opacity-0 group-hover:opacity-100` patterns completely hide interactive elements from keyboard-only users.
+**Action:** When adding accessible labels (`aria-label`, `title`) to icon-only buttons, ensure the internal SVG is explicitly marked `aria-hidden="true"`. Also pair `group-hover:opacity-100` with `focus-within:opacity-100` or `focus:opacity-100` to maintain keyboard visibility.
