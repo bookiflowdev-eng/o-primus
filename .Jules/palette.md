@@ -1,0 +1,3 @@
+## 2024-09-07 - Accessibility and Focus Rings on Dark Backgrounds
+**Learning:** Pure `focus:outline-none` creates critical keyboard accessibility issues. Additionally, on dark mode interfaces (e.g., `#030303`), focus rings can be invisible unless combined with a specific `ring-offset-color` that matches the background. Icon-only buttons also require localized `aria-label`s for screen readers (e.g., "Se déconnecter" instead of English defaults).
+**Action:** Always replace pure `focus:outline-none` with explicit `focus-visible:ring-*` classes, ensure `focus-visible:ring-offset-*` exactly matches the background color to guarantee contrast, and localize `aria-label` strings (adding `aria-hidden="true"` to child SVG components) for all icon-only interactive elements.
