@@ -1,0 +1,3 @@
+## 2024-11-20 - Custom Focus Ring Offsets on Monochromatic UI
+**Learning:** When adding `focus-visible` to interactive elements nested in complex monochromatic layouts (like sidebars or footers) that previously had `focus:outline-none`, standard `ring-offset` behavior can create jarring visual artifacts against the parent's non-standard background color.
+**Action:** Always explicitly declare `focus-visible:ring-offset-[COLOR]` (e.g., `focus-visible:ring-offset-[#030303]`) matching the exact background color of the parent container to ensure the focus ring appears clean and intentional, not broken.
