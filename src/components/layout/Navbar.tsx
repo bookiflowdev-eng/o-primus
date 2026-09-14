@@ -107,7 +107,7 @@ export function Navbar() {
               <div className="flex items-center gap-4">
                 <button 
                   onClick={() => signIn('google')} 
-                  className="hidden sm:block text-[13px] font-medium text-[#A0A0A0] hover:text-white transition-colors focus:outline-none"
+                  className="hidden sm:block text-[13px] font-medium text-[#A0A0A0] hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-transparent rounded-sm px-1 py-0.5"
                 >
                   S'identifier
                 </button>

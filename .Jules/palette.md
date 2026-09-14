@@ -1,0 +1,3 @@
+## 2024-03-24 - Accurate Focus Ring Offsets
+**Learning:** When adding `focus-visible:ring-offset-*` classes to improve keyboard navigation accessibility, you cannot assume the offset color. You must accurately match the exact surrounding background color (e.g. `#050505` for a sidebar, `transparent` for a navbar). Failing to do so creates visual artifacts. Playwright is highly effective at catching these strict mode violations if you accurately mock the unauthenticated states to prevent redirects.
+**Action:** Always inspect the actual parent background color (via `grep` or by inspecting CSS utility classes like `premium-glass`) before applying focus offset colors to interactive elements.
