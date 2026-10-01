@@ -1,0 +1,3 @@
+## 2024-05-18 - Missing labels and focus rings on dark mode sidebar action buttons
+**Learning:** Icon-only action buttons in dark themed UI areas (like the `#030303` sidebar footer) frequently omit `aria-label`s and visible focus states, rendering them inaccessible to screen readers and keyboard users. `focus:outline-none` is heavily used without fallback.
+**Action:** Always pair `focus:outline-none` with `focus-visible` styles that include `ring-offset` matching the explicit background color (e.g., `focus-visible:ring-offset-[#030303]`) and add semantic `aria-label` with `aria-hidden` on internal decorative SVGs.
