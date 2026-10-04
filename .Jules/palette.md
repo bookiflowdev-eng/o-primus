@@ -1,0 +1,3 @@
+## 2026-10-04 - Localized Labels and Dark Theme Focus States
+**Learning:** When adding ARIA labels and titles to UI elements, ensure they match the application's primary language (e.g., using 'Se déconnecter' instead of 'Log Out' in French interfaces). Additionally, when adding `focus-visible` states in dark-themed elements, use `ring-offset-[exact-hex]` to perfectly match the background color (like `#030303`) to avoid mismatched clipping artifacts during keyboard navigation.
+**Action:** Always verify the surrounding background color using `grep` or similar tools to apply the correct `ring-offset` hex color, and match localization settings for text values.
