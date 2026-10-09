@@ -5,7 +5,7 @@ import { supabaseAdmin } from '@/lib/supabase'
 import { runGenerationPipeline } from '@/lib/pipeline/pipeline-runner'
 import type { GenerationJob } from '@/types/domain'
 import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from '@/lib/auth'
 import { checkAndDecrementQuota } from '@/lib/quota'
 import { unstable_after as after } from 'next/server'
 
