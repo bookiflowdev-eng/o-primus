@@ -1,0 +1,3 @@
+## 2025-02-28 - Dark Theme Focus Rings & Icon Accessibility
+**Learning:** In the dark AppShell footer context (`bg-[#030303]`), default or standard focus rings either clash or get clipped. Also, purely decorative icons inside icon-only buttons need `aria-hidden="true"` to prevent redundant screen reader announcements once the parent `aria-label` is set.
+**Action:** When adding `focus-visible` to interactive elements on dark backgrounds, explicitly use `focus-visible:ring-offset-[#030303]` (or matching background color) to ensure proper contrast. Always add `aria-hidden="true"` to SVGs within `aria-label`ed buttons.
