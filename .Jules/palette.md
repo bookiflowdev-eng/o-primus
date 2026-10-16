@@ -1,0 +1,3 @@
+## 2024-05-17 - AppShell LogOut Button Accessibility
+**Learning:** Icon-only buttons located in dark AppShell footers (like LogOut) require explicit `ring-offset` styling that exactly matches their localized background (`bg-[#030303]`) to avoid visually jarring default browser focus rings. The application is localized in French.
+**Action:** When styling dark mode interactive elements, always specify `focus-visible:ring-offset-[#030303]` (or the appropriate background color) and ensure ARIA labels match the French localization (e.g., "Se déconnecter"). Ensure decorative SVGs are marked `aria-hidden="true"`.
