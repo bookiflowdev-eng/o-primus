@@ -1,0 +1,3 @@
+## 2024-05-18 - Sidebar Interactive Elements Focus Visibility
+**Learning:** Interactive elements placed in the dark `AppShell` sidebar footer (like the LogOut button) are completely lost without explicit focus styles. `focus:outline-none` was used but without a `focus-visible` fallback, making keyboard navigation inaccessible. The background is `#030303`.
+**Action:** When overriding default focus rings on elements in dark nested containers (like the AppShell footer), always provide explicit `focus-visible:ring-offset` classes that perfectly match the local background color (`#030303`) to avoid clipping or mismatched rings.
