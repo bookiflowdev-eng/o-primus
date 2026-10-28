@@ -1,0 +1,6 @@
+## 2024-05-24 - Matching Focus Visible Offsets in Dark Backgrounds
+**Learning:** When adding focus-visible styles to interactive elements placed in dark wrapper containers (like the AppShell sidebar footer which uses `bg-[#030303]`), simply adding `focus-visible:ring` is insufficient and can lead to clipped or mismatched rings.
+**Action:** Always explicitly verify the parent wrapper's background color (e.g., using `grep`) and pair the focus ring with a matching offset using Tailwind's ring offset utilities, such as `focus-visible:ring-offset-[#030303]`.
+## 2024-05-24 - Handling Erroneous Code Review Feedback on Localization
+**Learning:** When automated code reviews flag localization (e.g., claiming French labels like "Se déconnecter" are hallucinated because variables are in English), they may be incorrectly assuming the app's primary language based on code syntax rather than the actual UI text (which in this app, like `Navbar.tsx`, is demonstrably in French).
+**Action:** Use terminal commands (like `grep -n "Se déconnecter" src/components/layout/Navbar.tsx`) to verify the existing localization context before blindly applying code review suggestions. If the current UI context is indeed French, retain the French accessible labels and re-request the review or proceed.
