@@ -1,0 +1,3 @@
+## 2023-10-27 - [Focus Ring Visibility in Dark Sidebar Footer]
+**Learning:** When applying `focus-visible` styles to interactive elements in deep dark containers (like the AppShell footer sidebar with `bg-[#030303]`), default focus rings or un-offset rings can be completely clipped or visually swallowed by the dark background, rendering keyboard navigation invisible to users.
+**Action:** Always explicitly use `ring-offset` classes tailored to the exact hex color of the container's background (e.g., `focus-visible:ring-offset-[#030303]`) to guarantee the focus ring is properly inset/offset and fully visible during keyboard navigation.
