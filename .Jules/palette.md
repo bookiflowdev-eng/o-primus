@@ -1,0 +1,3 @@
+## 2023-11-28 - Dark Theme Focus Ring Visibility
+**Learning:** In the `AppShell` component, the sidebar footer uses a dark `#030303` background. Standard `focus-visible` outlines (e.g., `ring-white`) blend in or appear clipped against this specific dark background, making keyboard navigation less visible for interactive elements like the LogOut button.
+**Action:** When adding keyboard accessibility to interactive elements within the `AppShell` dark sidebar footer (or similar dark backgrounds), explicitly pair `focus-visible:ring-2` with `focus-visible:ring-offset-2` and a matching offset color like `focus-visible:ring-offset-[#030303]` to ensure the focus ring separates cleanly from the background and remains highly visible.
